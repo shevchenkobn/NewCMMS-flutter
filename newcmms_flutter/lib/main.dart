@@ -10,7 +10,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,7 +20,6 @@ class MyApp extends StatelessWidget {
       ],
       onGenerateTitle: (BuildContext context) =>
         AppLocalizations.of(context).title,
-      title: 'Flutter Demo',
       supportedLocales: [
         const Locale('en'),
         const Locale('uk'),

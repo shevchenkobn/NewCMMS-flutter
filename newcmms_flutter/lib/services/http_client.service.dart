@@ -17,12 +17,12 @@ class HttpClient {
     _dio.options.baseUrl = defaultBaseUrl + apiBase;
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options) async {
-        if (options.path == AuthService.authPath ||
-            options.path == AuthService.authRefreshPath) {
+        if (AuthService.isPathWithoutAuth(options.path)) {
           return options;
         }
         await _authService.getEnsuredToken(_dio);
-        options.headers.addEntries([_authService.getTokenHeader()]);
+        final tokenHeader = _authService.getTokenHeader();
+        options.headers[tokenHeader.key] = tokenHeader.value;
         return options;
       }
     ));

@@ -12,9 +12,13 @@ class AuthService {
   String _accessToken;
   DateTime _accessTokenExpiration;
   SharedPreferences _prefs;
+  Future<String> _tokenRefresher;
 
   get isTokenExpired => _accessTokenExpiration?.isBefore(DateTime.now());
   get accessToken => _accessToken;
+  get isAuthorized => _refreshToken != null && _accessToken != null;
+
+  AuthService._create();
 
   static getInstance() async {
     final inst = AuthService._create();
@@ -22,7 +26,9 @@ class AuthService {
     return inst;
   }
 
-  AuthService._create();
+  static isPathWithoutAuth(String path) {
+    return path == authPath || path == authRefreshPath;
+  }
 
   _init() async {
     _prefs = await SharedPreferences.getInstance();
@@ -36,29 +42,43 @@ class AuthService {
   }
 
   setTokens({String accessToken, String refreshToken}) async {
+    if (accessToken == null) {
+      throw new ArgumentError.notNull('accessToken');
+    }
+    if (refreshToken == null) {
+      throw new ArgumentError.notNull('refreshToken');
+    }
     _accessToken = accessToken;
     refreshToken = refreshToken;
+    _setTokenExpiration();
     await Future.wait([
         _prefs.setString(authAccessTokenKey, _accessToken),
         _prefs.setString(authRefreshTokenKey, _refreshToken),
     ]);
-    _setTokenExpiration();
   }
 
-  getEnsuredToken(Dio dio) async {
+  Future<String> getEnsuredToken(Dio dio) {
     if (_accessToken != null && !isTokenExpired) {
-      return _accessToken;
+      return Future.value(_accessToken);
     }
+    if (_tokenRefresher != null) {
+      return _tokenRefresher;
+    }
+    _tokenRefresher = _doUpdateAccessToken(dio);
+    return _tokenRefresher;
+  }
+
+  Future<String> _doUpdateAccessToken(Dio dio) async {
     if (_refreshToken == null) {
       throw new StateError('Refresh token is not defined');
     }
     Response response = await dio.post(authRefreshPath,
-      data: {
-        'refreshToken': _refreshToken,
-      },
-      queryParameters: {
-        'include-refresh-token': true,
-      }
+        data: {
+          'refreshToken': _refreshToken,
+        },
+        queryParameters: {
+          'include-refresh-token': true,
+        }
     );
     await setTokens(
       accessToken: response.data['accessToken'],
@@ -67,7 +87,7 @@ class AuthService {
     return _accessToken;
   }
 
-  getTokenHeader() {
+  MapEntry<String, String> getTokenHeader() {
     if (_accessToken == null) {
       throw new ArgumentError.notNull();
     }
