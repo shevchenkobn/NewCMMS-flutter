@@ -3,7 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:jose/jose.dart';
 
 class AuthService {
-  static const authRefreshPath = 'auth/refresh';
+  static const authRefreshPath = 'auth/refresh/';
+  static const authPath = 'auth/';
   static const authRefreshTokenKey = 'apiRefreshToken';
   static const authAccessTokenKey = 'apiAccessToken';
 
@@ -45,8 +46,8 @@ class AuthService {
   }
 
   getEnsuredToken(Dio dio) async {
-    if (!isTokenExpired) {
-      return;
+    if (_accessToken != null && !isTokenExpired) {
+      return _accessToken;
     }
     if (_refreshToken == null) {
       throw new StateError('Refresh token is not defined');
@@ -63,6 +64,14 @@ class AuthService {
       accessToken: response.data['accessToken'],
       refreshToken: response.data['refreshToken'],
     );
+    return _accessToken;
+  }
+
+  getTokenHeader() {
+    if (_accessToken == null) {
+      throw new ArgumentError.notNull();
+    }
+    return MapEntry('Authorization', 'Bearer ' + _accessToken);
   }
 
   _setTokenExpiration() {
