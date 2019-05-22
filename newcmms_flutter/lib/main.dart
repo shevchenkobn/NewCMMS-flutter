@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'localizations.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,7 +10,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        AppLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      onGenerateTitle: (BuildContext context) =>
+        AppLocalizations.of(context).title,
       title: 'Flutter Demo',
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('uk'),
+      ],
       theme: ThemeData(
         // This is the theme of your application.
         //
