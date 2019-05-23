@@ -24,6 +24,11 @@ dependencies:
   dio_flutter_transformer: ^2.0.10
   flutter_localizations:
     sdk: flutter
+  validators: ^2.0.0+1
+  shared_preferences: ^0.5.2+1
+  jose: ^0.1.2
+
+  json_annotation: ^2.4.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -33,9 +38,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   intl_translation: ^0.17.4
-  shared_preferences: ^0.5.2+1
-  jose: ^0.1.2
-  validators: ^2.0.0+1
+  build_runner: ^1.4.0
+  json_serializable: ^3.0.0
 
 
 
