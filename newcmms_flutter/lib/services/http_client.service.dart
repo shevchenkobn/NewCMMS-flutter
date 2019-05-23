@@ -28,7 +28,7 @@ class HttpClient {
     ));
   }
 
-  setBaseUrl(String baseUrl, { bool addApiBase = true }) {
+  void setBaseUrl(String baseUrl, { bool addApiBase = true }) {
     if (!isURL(baseUrl) || !baseUrl.endsWith('/')) {
       throw new ArgumentError.value(baseUrl, 'baseUrl');
     }

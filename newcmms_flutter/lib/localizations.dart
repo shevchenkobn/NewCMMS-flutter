@@ -26,6 +26,10 @@ class AppLocalizations {
         name: 'title', desc: 'The application title');
   }
 
+  String get loginPageTitle {
+    return Intl.message('NewCMMS Login', name: 'loginPageTitle');
+  }
+
   String get loginPageLoginLabel {
     return Intl.message('Login', name: 'loginPageLoginLabel');
   }
@@ -38,8 +42,12 @@ class AppLocalizations {
     return Intl.message('Log in', name: 'loginPageSubmitLabel');
   }
 
-  String get loginPagePasswordIsRequiredError {
-    return Intl.message('Password is required', name: 'loginPagePasswordIsRequiredError');
+  String get loginPageEmailError {
+    return Intl.message('Invalid email', name: 'loginPageEmailError');
+  }
+
+  String get loginPagePasswordError {
+    return Intl.message('Password is required', name: 'loginPagePasswordError');
   }
 
   String get loginPageLoginOrPasswordError {

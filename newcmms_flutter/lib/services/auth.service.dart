@@ -14,23 +14,23 @@ class AuthService {
   SharedPreferences _prefs;
   Future<String> _tokenRefresher;
 
-  get isTokenExpired => _accessTokenExpiration?.isBefore(DateTime.now());
-  get accessToken => _accessToken;
-  get isAuthorized => _refreshToken != null && _accessToken != null;
+  bool get isTokenExpired => _accessTokenExpiration?.isBefore(DateTime.now());
+  String get accessToken => _accessToken;
+  bool get isAuthorized => _refreshToken != null && _accessToken != null;
 
   AuthService._create();
 
-  static getInstance() async {
+  static Future<AuthService> getInstance() async {
     final inst = AuthService._create();
     await inst._init();
     return inst;
   }
 
-  static isPathWithoutAuth(String path) {
+  static bool isPathWithoutAuth(String path) {
     return path == authPath || path == authRefreshPath;
   }
 
-  _init() async {
+  Future _init() async {
     _prefs = await SharedPreferences.getInstance();
     if (_prefs.containsKey(authRefreshTokenKey)) {
       _refreshToken = _prefs.getString(authRefreshTokenKey);
@@ -41,7 +41,7 @@ class AuthService {
     }
   }
 
-  setTokens({String accessToken, String refreshToken}) async {
+  Future setTokens({String accessToken, String refreshToken}) async {
     if (accessToken == null) {
       throw new ArgumentError.notNull('accessToken');
     }
@@ -94,7 +94,7 @@ class AuthService {
     return MapEntry('Authorization', 'Bearer ' + _accessToken);
   }
 
-  _setTokenExpiration() {
+  void _setTokenExpiration() {
     final jws = JsonWebSignature.fromCompactSerialization(_accessToken);
     _accessTokenExpiration = jws.unverifiedPayload.jsonContent["exp"];
   }
