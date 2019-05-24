@@ -28,6 +28,8 @@ class AppLocalizations {
 
   String get unknownError => Intl.message('Unknown error. Try again later.', name: 'unknownError');
 
+  String get ok => Intl.message('OK', name: 'ok');
+
   String get userPageTitle {
     return Intl.message('NewCMMS App User', name: 'userPageTitle');
   }
