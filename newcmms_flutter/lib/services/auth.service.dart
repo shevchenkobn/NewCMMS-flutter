@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import '../models/user.model.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:jose/jose.dart';
@@ -7,31 +11,26 @@ class AuthService {
   static const authPath = 'auth/';
   static const authRefreshTokenKey = 'apiRefreshToken';
   static const authAccessTokenKey = 'apiAccessToken';
+  static const authUserKey = 'apiAccessToken';
 
   String _refreshToken;
   String _accessToken;
   DateTime _accessTokenExpiration;
   SharedPreferences _prefs;
   Future<String> _tokenRefresher;
+  User _user;
 
   bool get isTokenExpired => _accessTokenExpiration?.isBefore(DateTime.now());
   String get accessToken => _accessToken;
-  bool get isAuthorized => _refreshToken != null && _accessToken != null;
-
-  AuthService._create();
-
-  static Future<AuthService> getInstance() async {
-    final inst = AuthService._create();
-    await inst._init();
-    return inst;
+  bool get hasTokens => _refreshToken != null && _accessToken != null;
+  User get user => _user;
+  Future<bool> saveUser(User user) {
+    _user = user;
+    return _prefs.setString(authUserKey, jsonEncode(user.toJson()));
   }
 
-  static bool isPathWithoutAuth(String path) {
-    return path == authPath || path == authRefreshPath;
-  }
-
-  Future _init() async {
-    _prefs = await SharedPreferences.getInstance();
+  AuthService(SharedPreferences prefs) {
+    _prefs = prefs;
     if (_prefs.containsKey(authRefreshTokenKey)) {
       _refreshToken = _prefs.getString(authRefreshTokenKey);
     }
@@ -39,9 +38,16 @@ class AuthService {
       _accessToken = _prefs.getString(authAccessTokenKey);
       _setTokenExpiration();
     }
+    if (_prefs.containsKey(authUserKey)) {
+      _user = User.fromJson(jsonDecode(_prefs.getString(authUserKey)));
+    }
   }
 
-  Future setTokens({String accessToken, String refreshToken}) async {
+  static bool isPathWithoutAuth(String path) {
+    return path == authPath || path == authRefreshPath;
+  }
+
+  Future<void> setTokens({String accessToken, String refreshToken}) async {
     if (accessToken == null) {
       throw new ArgumentError.notNull('accessToken');
     }

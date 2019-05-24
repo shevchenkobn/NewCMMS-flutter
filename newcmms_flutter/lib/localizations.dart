@@ -26,6 +26,30 @@ class AppLocalizations {
         name: 'title', desc: 'The application title');
   }
 
+  String get unknownError => Intl.message('Unknown error. Try again later.', name: 'unknownError');
+
+  String get userPageTitle {
+    return Intl.message('NewCMMS App User', name: 'userPageTitle');
+  }
+
+  String get userDrawerItem => Intl.message('Account info', name: 'userDrawerItem');
+
+  String get homeDrawerUserError => Intl.message('Failed to load user', name: 'userDrawerUserError');
+
+  String get triggerHistoryDrawerItem => Intl.message('Trigger history', name: 'triggerHistoryDrawerItem');
+
+  String get triggerDevicesDrawerItem => Intl.message('Trigger devices', name: 'triggerDevicesDrawerItem');
+
+  String get checkInDrawerItem => Intl.message('Check-in', name: 'checkInDrawerItem');
+
+  String get settingsDrawerItem => Intl.message('Settings', name: 'settingsDrawerItem');
+
+  String get settingsPageTitle => Intl.message('Settings', name: 'settingsPageTitle');
+
+  String get settingsPageBaseUrlLabel => Intl.message('Server URL', name: 'settingsPageBaseUrlLabel');
+
+  String get settingsPageInvalidBaseUrlError => Intl.message('A valid URL is required', name: 'settingsPageInvalidBaseUrlError');
+
   String get loginPageTitle {
     return Intl.message('NewCMMS Login', name: 'loginPageTitle');
   }

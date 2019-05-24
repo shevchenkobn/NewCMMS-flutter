@@ -4,7 +4,7 @@ import 'package:newcmms_flutter/di.dart';
 
 import 'localizations.dart';
 import 'widgets/home.page.dart';
-import 'widgets/login.page.dart';
+import 'widgets/login.dart';
 
 void main() {
   ModuleContainer().initializeDefault().then(
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         HomePage.routerName: (context) => HomePage(),
-        LoginPage.routerName: (context) => LoginPage(),
+//        LoginPage.routerName: (context) => LoginPage(),
       },
     );
   }
