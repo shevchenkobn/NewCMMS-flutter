@@ -10,7 +10,7 @@ import 'login.dart';
 import 'login_drawer_content.dart';
 
 class HomePage extends StatefulWidget {
-  static const routerName = '/';
+  static const routeName = '/';
 
   @override
   State<StatefulWidget> createState() => ModuleContainer.getDefault().get<HomePageState>();
@@ -30,7 +30,7 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _contentType = !_authService.hasTokens ? PageContentType.user : PageContentType.login;
+    _contentType = _authService.hasTokens ? PageContentType.user : PageContentType.login;
 //    if (!_authService.isAuthorized) {
 //      SchedulerBinding.instance.addPostFrameCallback((_) {
 //        Navigator.of(context).pushReplacementNamed(LoginPage.routerName);

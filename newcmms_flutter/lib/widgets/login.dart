@@ -27,7 +27,7 @@ class LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  bool _isProcessing;
+  bool _isProcessing = false;
 
   LoginState(this._authService, this._httpClient, this._onFinish);
 

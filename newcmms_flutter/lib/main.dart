@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:newcmms_flutter/di.dart';
 
 import 'localizations.dart';
+import 'widgets/general_settings.page.dart';
 import 'widgets/home.page.dart';
 import 'widgets/login.dart';
 
@@ -31,7 +32,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        HomePage.routerName: (context) => HomePage(),
+        HomePage.routeName: (context) => HomePage(),
+        GeneralSettingsPage.routeName: (context) => GeneralSettingsPage(),
 //        LoginPage.routerName: (context) => LoginPage(),
       },
     );
