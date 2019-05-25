@@ -29,7 +29,7 @@ class HomeUserState extends State<HomeUser> {
     super.initState();
     if (_authService.user == null) {
       _httpClient.refreshCurrentUser().then((user) {
-        setState(() {});
+        _setStateSafely();
       }).catchError(_handleError);
     }
   }
@@ -39,34 +39,8 @@ class HomeUserState extends State<HomeUser> {
     final localizations = AppLocalizations.of(context);
     return RefreshIndicator(
       onRefresh: () => _httpClient.refreshCurrentUser().then((user) {
-          setState(() {});
-        }).catchError((error, stackTrace) {
-          String content;
-          if (error is DioError) {
-            if (error.type == DioErrorType.DEFAULT && error.error is SocketException) {
-              content = AppLocalizations
-                  .of(context).internetError;
-            } else {
-              content = AppLocalizations
-                  .of(context).userLoadError;
-            }
-          } else {
-            content = AppLocalizations
-                .of(context).unknownError;
-            print(error);
-            print(stackTrace);
-          }
-          _snackbar = Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(content),
-            duration: Duration(days: 10),
-            action: SnackBarAction(
-              label: AppLocalizations
-                  .of(context).ok,
-              onPressed: () {},
-              textColor: Colors.redAccent,
-            ),
-          ));
-        }),
+          _setStateSafely();
+        }).catchError(_handleError),
       child: ScrollConfiguration(
         behavior: NoOverScrollGlow(),
         child: SingleChildScrollView(
@@ -150,5 +124,11 @@ class HomeUserState extends State<HomeUser> {
         textColor: Colors.redAccent,
       ),
     ));
+  }
+
+  void _setStateSafely({VoidCallback cb}) {
+    if (mounted) {
+      setState(cb ?? () {});
+    }
   }
 }

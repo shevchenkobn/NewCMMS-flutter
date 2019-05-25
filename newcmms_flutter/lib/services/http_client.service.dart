@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:newcmms_flutter/models/trigger_device.model.dart';
 import 'package:validators/validators.dart';
 import 'package:dio_flutter_transformer/dio_flutter_transformer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,8 +15,9 @@ class HttpClient {
   final AuthService _authService;
   final SharedPreferences _prefs;
   final Dio _dio;
-
   String _baseUrl;
+
+  Dio get dio => _dio;
   String get baseUrl => _baseUrl;
 
   HttpClient(this._prefs, this._authService) : _dio = Dio() {
@@ -60,5 +62,13 @@ class HttpClient {
     });
     await _authService.setTokens(accessToken: response.data['accessToken'],
         refreshToken: response.data['refreshToken']);
+  }
+
+  Future<List<TriggerDevice>> getTriggerDevices({bool growableList = true}) async {
+    return _dio.get<Map<String, dynamic>>('trigger-devices/')
+      .then((response) =>
+        (response.data['triggerDevices'] as List<Map<String, dynamic>>)
+            .map((json) => TriggerDevice.fromJson(json)).toList(growable: growableList)
+      );
   }
 }

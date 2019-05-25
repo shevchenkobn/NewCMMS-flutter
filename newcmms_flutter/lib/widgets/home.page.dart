@@ -71,7 +71,16 @@ class HomePageState extends State<HomePage> {
       case PageContentType.login:
         return LoginDrawerContent();
       default:
-        return HomeDrawerContent();
+        return HomeDrawerContent(
+          onItemTap: (pageContentType) {
+            Navigator.of(context).pop();
+            if (_contentType != pageContentType) {
+              setState(() {
+                _contentType = pageContentType;
+              });
+            }
+          },
+        );
     }
   }
 

@@ -8,8 +8,8 @@ import 'package:validators/validators.dart';
 
 import '../di.dart';
 import '../localizations.dart';
-import '../services/auth.service.dart';
 import '../services/http_client.service.dart';
+import '../services/auth.service.dart';
 import 'home.page.dart';
 
 class Login extends StatefulWidget {
