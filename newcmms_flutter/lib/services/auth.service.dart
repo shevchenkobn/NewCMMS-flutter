@@ -11,7 +11,7 @@ class AuthService {
   static const authPath = 'auth/';
   static const authRefreshTokenKey = 'apiRefreshToken';
   static const authAccessTokenKey = 'apiAccessToken';
-  static const authUserKey = 'apiAccessToken';
+  static const authUserKey = 'authUser';
 
   String _refreshToken;
   String _accessToken;
@@ -20,7 +20,9 @@ class AuthService {
   Future<String> _tokenRefresher;
   User _user;
 
-  bool get isTokenExpired => _accessTokenExpiration?.isBefore(DateTime.now());
+  bool get isTokenExpired =>
+      _accessTokenExpiration == null ||
+          _accessTokenExpiration.isBefore(DateTime.now());
   String get accessToken => _accessToken;
   bool get hasTokens => _refreshToken != null && _accessToken != null;
   User get user => _user;
@@ -55,7 +57,7 @@ class AuthService {
       throw new ArgumentError.notNull('refreshToken');
     }
     _accessToken = accessToken;
-    refreshToken = refreshToken;
+    _refreshToken = refreshToken;
     _setTokenExpiration();
     await Future.wait([
         _prefs.setString(authAccessTokenKey, _accessToken),
@@ -64,13 +66,14 @@ class AuthService {
   }
 
   Future<String> getEnsuredToken(Dio dio) {
-    if (_accessToken != null && !isTokenExpired) {
+    if (!isTokenExpired) {
       return Future.value(_accessToken);
     }
     if (_tokenRefresher != null) {
       return _tokenRefresher;
     }
     _tokenRefresher = _doUpdateAccessToken(dio);
+    _tokenRefresher.whenComplete(() => _tokenRefresher = null);
     return _tokenRefresher;
   }
 
@@ -80,6 +83,7 @@ class AuthService {
     }
     Response response = await dio.post(authRefreshPath,
         data: {
+          'accessToken': _accessToken,
           'refreshToken': _refreshToken,
         },
         queryParameters: {
@@ -102,6 +106,6 @@ class AuthService {
 
   void _setTokenExpiration() {
     final jws = JsonWebSignature.fromCompactSerialization(_accessToken);
-    _accessTokenExpiration = jws.unverifiedPayload.jsonContent["exp"];
+    _accessTokenExpiration = DateTime.fromMicrosecondsSinceEpoch(jws.unverifiedPayload.jsonContent["exp"]);
   }
 }

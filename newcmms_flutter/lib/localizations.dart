@@ -26,7 +26,11 @@ class AppLocalizations {
         name: 'title', desc: 'The application title');
   }
 
+  String get loading => Intl.message('Loading...', name: 'loading');
+
   String get unknownError => Intl.message('Unknown error. Try again later.', name: 'unknownError');
+
+  String get internetError => Intl.message('Unable to connect to server. Check Internet connection and server accessibility.', name: 'internetError');
 
   String get ok => Intl.message('OK', name: 'ok');
 
@@ -36,7 +40,7 @@ class AppLocalizations {
 
   String get userDrawerItem => Intl.message('Account info', name: 'userDrawerItem');
 
-  String get homeDrawerUserError => Intl.message('Failed to load user', name: 'userDrawerUserError');
+  String get userLoadError => Intl.message('Failed to load user', name: 'userDrawerUserError');
 
   String get triggerHistoryDrawerItem => Intl.message('Trigger history', name: 'triggerHistoryDrawerItem');
 

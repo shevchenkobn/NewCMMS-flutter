@@ -15,7 +15,8 @@ class HttpClient {
   final SharedPreferences _prefs;
   final Dio _dio;
 
-  get baseUrl => _dio.options.baseUrl;
+  String _baseUrl;
+  String get baseUrl => _baseUrl;
 
   HttpClient(this._prefs, this._authService) : _dio = Dio() {
     setBaseUrl(this._prefs.get(apiBaseKey) ?? defaultBaseUrl);
@@ -37,18 +38,19 @@ class HttpClient {
     if (!isURL(baseUrl)) {
       throw new ArgumentError.value(baseUrl, 'baseUrl');
     }
-    final checkedBase = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
-    _dio.options.baseUrl = addApiBase ? checkedBase + apiBase : checkedBase;
-    return _prefs.setString(apiBaseKey, checkedBase);
+    _baseUrl = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
+    _dio.options.baseUrl = addApiBase ? _baseUrl + apiBase : _baseUrl;
+    return _prefs.setString(apiBaseKey, _baseUrl);
   }
 
   Future<User> getCurrentUser() async {
     if (!_authService.hasTokens) {
       throw new StateError('The user is not authorized');
     }
-    Response<User> response = await _dio.get('auth/identity');
-    await _authService.saveUser(response.data);
-    return response.data;
+    Response<Map<String, dynamic>> response = await _dio.get('auth/identity');
+    final user = User.fromJson(response.data);
+    await _authService.saveUser(user);
+    return user;
   }
 
   Future<void> authenticate({String email, String password}) async {

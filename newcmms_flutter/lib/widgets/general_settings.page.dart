@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:newcmms_flutter/services/http_client.service.dart';
 
 import '../di.dart';
@@ -18,8 +19,17 @@ class GeneralSettingsPageState extends State<GeneralSettingsPage> {
   final TextEditingController _baseApiController = TextEditingController();
   bool _baseApiInvalid = false;
   bool _isSaving = false;
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> _snackbar;
 
   GeneralSettingsPageState(this._httpClient);
+
+  @override
+  void initState() {
+    super.initState();
+    if (!_baseApiInvalid) {
+      _baseApiController.text = _httpClient.baseUrl;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
@@ -39,10 +49,18 @@ class GeneralSettingsPageState extends State<GeneralSettingsPage> {
 
   List<Widget> _getStackList() {
     final localization = AppLocalizations.of(context);
-    final list = [
+    final list = <Widget>[
       Positioned(
-          top: 0,
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 22.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
                 controller: _baseApiController,
@@ -54,41 +72,63 @@ class GeneralSettingsPageState extends State<GeneralSettingsPage> {
                   setState(() {
                     _baseApiInvalid = true;
                   });
-                  _httpClient.setBaseUrl(_baseApiController.text).then((_) {
+                  _httpClient.setBaseUrl(_baseApiController.text).whenComplete(() => setState(() {
+                    setState(() {
+                      _isSaving = false;
+                    });
+                    _hideSnackbar();
+                  })).then((_) {
                     setState(() {
                       _baseApiInvalid = false;
                     });
-                    GeneralSettingsPage._navigateFrom(context);
+                    SystemChannels.textInput.invokeMethod('TextInput.hide');
                   }).catchError((error) {
                     if (error is ArgumentError) {
                       setState(() {
                         _baseApiInvalid = true;
                       });
                     } else {
-                      Scaffold.of(context).showSnackBar(
+                      _snackbar = Scaffold.of(context).showSnackBar(
                         SnackBar(
                           content: Text(localization.unknownError),
                           duration: Duration(days: 10),
+                          action: SnackBarAction(
+                            label: localization.ok,
+                            onPressed: () {},
+                            textColor: Colors.redAccent,
+                          ),
                         ),
                       );
                     }
-                  }).whenComplete(() => setState(() {
-                    _isSaving = false;
-                  }));
+                  });
                 },
               ),
             ],
-          )
+          ),
+        ),
       ),
     ];
     if (_isSaving) {
-      list.add(Positioned(
-        top: 0,
+      list.add(Align(
+        alignment: AlignmentDirectional.topCenter,
         child: LinearProgressIndicator(
           value: null,
-        ),
+        )
       ));
     }
     return list;
+  }
+
+  @override
+  void dispose() {
+    _baseApiController.dispose();
+    super.dispose();
+  }
+
+  void _hideSnackbar() {
+    if (_snackbar != null) {
+      _snackbar.close();
+      _snackbar = null;
+    }
   }
 }

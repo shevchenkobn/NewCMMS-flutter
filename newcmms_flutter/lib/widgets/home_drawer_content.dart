@@ -17,25 +17,22 @@ class HomeDrawerContent extends StatefulWidget {
 class HomeDrawerContentState extends State<HomeDrawerContent> {
   final HttpClient _httpClient;
   final AuthService _authService;
-  User _user;
 
   HomeDrawerContentState(this._httpClient, this._authService);
 
   @override
   void initState() {
     super.initState();
-    if (_authService.user != null) {
-      this._user = _authService.user;
-    } else {
+    if (_authService.user != null || true) {
       _httpClient.getCurrentUser().then((user) {
-        setState(() {
-          _user = user;
-        });
-      }).catchError((error) {
+        setState(() {});
+      }).catchError((error, stackTrace) {
+        print(error);
+        print(stackTrace);
         Scaffold.of(context).showSnackBar(
             SnackBar(content: Text(AppLocalizations
                 .of(context)
-                .homeDrawerUserError)));
+                .userLoadError)));
       });
     }
   }
@@ -46,8 +43,8 @@ class HomeDrawerContentState extends State<HomeDrawerContent> {
       padding: EdgeInsets.zero,
       children: <Widget>[
         UserAccountsDrawerHeader(
-          accountEmail: Text(_user?.email),
-          accountName: Text(_user?.fullName),
+          accountEmail: Text(_authService.user.email ?? localization.loading),
+          accountName: Text(_authService.user.fullName ?? localization.loading),
         ),
         ListTile(
           leading: Icon(Icons.account_circle),

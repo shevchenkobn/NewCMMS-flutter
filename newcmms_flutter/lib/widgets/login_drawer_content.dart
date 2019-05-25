@@ -16,7 +16,14 @@ class LoginDrawerContentState extends State<LoginDrawerContent> {
       padding: EdgeInsets.zero,
       children: <Widget>[
         DrawerHeader(
-          child: Text(localization.loginPageTitle),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+          ),
+          child: Text(localization.loginPageTitle,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
         ),
         ListTile(
           leading: Icon(Icons.settings),

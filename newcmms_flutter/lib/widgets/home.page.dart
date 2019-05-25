@@ -84,7 +84,7 @@ class HomePageState extends State<HomePage> {
           },
         );
       default:
-        throw 'not found';
+        return Center(child: Text('not found'));
     }
   }
 }

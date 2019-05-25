@@ -23,7 +23,7 @@ class ModuleContainer {
     injector.map<AuthService>((i) => AuthService(i.get<SharedPreferences>()), isSingleton: true);
     injector.map<HttpClient>((i) => HttpClient(i.get<SharedPreferences>(), i.get<AuthService>()), isSingleton: true);
 
-    injector.mapWithParams<LoginState>((i, params) => LoginState(i.get<AuthService>(), i.get<HttpClient>(), params['onReturn']));
+    injector.mapWithParams<LoginState>((i, params) => LoginState(i.get<AuthService>(), i.get<HttpClient>(), params[LoginState.onFinishParamName]));
     injector.map<HomePageState>((i) => HomePageState(i.get<AuthService>(), i.get<HttpClient>()));
     injector.map<LoginDrawerContentState>((i) => LoginDrawerContentState());
     injector.map<HomeDrawerContentState>((i) => HomeDrawerContentState(i.get<HttpClient>(), i.get<AuthService>()));
