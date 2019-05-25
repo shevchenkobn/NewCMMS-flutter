@@ -8,7 +8,7 @@ import 'package:newcmms_flutter/models/trigger_device.repository.dart';
 import 'package:newcmms_flutter/utils/common.dart';
 import '../di.dart';
 import '../localizations.dart';
-import '../services/http_client.service.dart';
+import 'trigger_device.dart';
 
 class TriggerDevices extends StatefulWidget {
   final double _viewPortHeight;
@@ -73,7 +73,8 @@ class TriggerDevicesState extends State<TriggerDevices> {
       );
     } else {
       return RefreshIndicator(
-        onRefresh: () => _triggerDeviceStore.refresh().then((user) {
+        onRefresh: () => _triggerDeviceStore.refresh().then((devices) {
+          _hideSnackbar();
           _setStateSafely();
         }).catchError(_handleError),
         child: _getListBody(),
@@ -94,7 +95,7 @@ class TriggerDevicesState extends State<TriggerDevices> {
               alignment: Alignment(0, -0.3),
               child: Text(AppLocalizations
                 .of(context)
-                .emptyList)
+                .nothingFound)
             ),
           ),
         ),
@@ -105,33 +106,38 @@ class TriggerDevicesState extends State<TriggerDevices> {
         itemCount: _triggerDeviceStore.list.length,
         itemBuilder: (context, index) {
           final device = _triggerDeviceStore.list[index];
-          return Card(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(Icons.title),
-                  title: Text(device.name),
-                  subtitle: Text(device.type),
-                ),
-                ListTile(
-                  leading: Icon(Icons.confirmation_number),
-                  title: Text(device.physicalAddress),
-                  subtitle: Text(localization.triggerDevicePhysicalAddress),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Chip(
-                    label: Text(device.status.toLocalizedString(context),
-                        style: TextStyle(
-                          color: Colors.white,
-                        )
-                    ),
-                    backgroundColor: Colors.pinkAccent,
+          return InkWell(
+            onTap: () {
+              TriggerDevicePage.navigateTo(context, device);
+            },
+            child: Card(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.title),
+                    title: Text(device.name),
+                    subtitle: Text(device.type),
                   ),
-                ),
-              ],
+                  ListTile(
+                    leading: Icon(Icons.confirmation_number),
+                    title: Text(device.physicalAddress),
+                    subtitle: Text(localization.triggerDevicePhysicalAddress),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Chip(
+                      label: Text(device.status.toLocalizedString(context),
+                          style: TextStyle(
+                            color: Colors.white,
+                          )
+                      ),
+                      backgroundColor: Colors.pinkAccent,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         }

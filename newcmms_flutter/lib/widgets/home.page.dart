@@ -51,7 +51,6 @@ class HomePageState extends State<HomePage> {
       appBar: _appBar,
       drawer: Drawer(
         child: _getDrawerContent(),
-
       ),
       body: _getContent(),
     );
@@ -64,6 +63,8 @@ class HomePageState extends State<HomePage> {
         return localizations.userPageTitle;
       case PageContentType.login:
         return localizations.loginPageTitle;
+      case PageContentType.triggers:
+        return localizations.triggerDevicesPageTitle;
       default:
         return localizations.title;
     }

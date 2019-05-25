@@ -34,7 +34,7 @@ class AppLocalizations {
 
   String get ok => Intl.message('OK', name: 'ok');
 
-  String get emptyList => Intl.message('Nothing found.', name: 'emptyList');
+  String get nothingFound => Intl.message('Nothing found.', name: 'nothingFound');
 
   String get userPageTitle {
     return Intl.message('NewCMMS App User', name: 'userPageTitle');
@@ -94,7 +94,15 @@ class AppLocalizations {
 
   String get userRoleAdmin => Intl.message('Admin', name: 'userRoleAdmin');
 
+  String get triggerDevicesPageTitle => Intl.message('Trigger devices', name: 'triggerDevicesPageTitle');
+
+  String get triggerDevicePageTitle => Intl.message('Trigger device details', name: 'triggerDevicePageTitle');
+
   String get triggerDevicePhysicalAddress => Intl.message('Physical address', name: 'triggerDevicePhysicalAddress');
+
+  String get triggerDeviceName => Intl.message('Device name', name: 'triggerDeviceName');
+
+  String get triggerDeviceType => Intl.message('Device type', name: 'triggerDeviceType');
 
   String get triggerDeviceStatusConnected => Intl.message('Connected', name: 'triggerDeviceStatusConnected');
 

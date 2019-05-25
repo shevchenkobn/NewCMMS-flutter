@@ -38,7 +38,7 @@ class TriggerDeviceRepository extends ChangeNotifier {
   }
 
   Future<UnmodifiableListView<TriggerDevice>> _loadList() async {
-    _setList(await _httpClient.getTriggerDevices(growableList: false));
+    _setList(await _httpClient.getTriggerDevices());
     return _readonlyList;
   }
 

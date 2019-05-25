@@ -51,4 +51,10 @@ class UserTrigger {
 
   factory UserTrigger.fromJson(Map<String, dynamic> json) => _$UserTriggerFromJson(json);
   Map<String, dynamic> toJson() => _$UserTriggerToJson(this);
+
+  @override
+  int get hashCode => userTriggerId;
+
+  @override
+  bool operator ==(other) => other is UserTrigger ? other.userTriggerId == userTriggerId : false;
 }

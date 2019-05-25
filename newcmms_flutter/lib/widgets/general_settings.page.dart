@@ -88,6 +88,7 @@ class GeneralSettingsPageState extends State<GeneralSettingsPage> {
                         _baseApiInvalid = true;
                       });
                     } else {
+                      _hideSnackbar();
                       _snackbar = Scaffold.of(context).showSnackBar(
                         SnackBar(
                           content: Text(localization.unknownError),

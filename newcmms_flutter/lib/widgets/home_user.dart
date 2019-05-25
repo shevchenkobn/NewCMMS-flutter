@@ -29,6 +29,7 @@ class HomeUserState extends State<HomeUser> {
     super.initState();
     if (_authService.user == null) {
       _httpClient.refreshCurrentUser().then((user) {
+        _hideSnackbar();
         _setStateSafely();
       }).catchError(_handleError);
     }
@@ -39,6 +40,7 @@ class HomeUserState extends State<HomeUser> {
     final localizations = AppLocalizations.of(context);
     return RefreshIndicator(
       onRefresh: () => _httpClient.refreshCurrentUser().then((user) {
+          _hideSnackbar();
           _setStateSafely();
         }).catchError(_handleError),
       child: ScrollConfiguration(
@@ -114,6 +116,7 @@ class HomeUserState extends State<HomeUser> {
       print(error);
       print(stackTrace);
     }
+    _hideSnackbar();
     _snackbar = Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(content),
       duration: Duration(days: 10),
@@ -132,6 +135,13 @@ class HomeUserState extends State<HomeUser> {
   void _setStateSafely({VoidCallback cb}) {
     if (mounted) {
       setState(cb ?? () {});
+    }
+  }
+
+  void _hideSnackbar() {
+    if (_snackbar != null) {
+      _snackbar.close();
+      _snackbar = null;
     }
   }
 }

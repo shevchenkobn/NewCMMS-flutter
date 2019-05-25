@@ -6,6 +6,7 @@ import 'localizations.dart';
 import 'widgets/general_settings.page.dart';
 import 'widgets/home.page.dart';
 import 'widgets/login.dart';
+import 'widgets/trigger_device.dart';
 
 void main() {
   ModuleContainer().initializeDefault().then(
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
       routes: {
         HomePage.routeName: (context) => HomePage(),
         GeneralSettingsPage.routeName: (context) => GeneralSettingsPage(),
-//        LoginPage.routerName: (context) => LoginPage(),
+        TriggerDevicePage.routeName: (context) => TriggerDevicePage(),
       },
     );
   }

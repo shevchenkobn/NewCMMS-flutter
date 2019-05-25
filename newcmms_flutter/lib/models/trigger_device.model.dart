@@ -60,4 +60,10 @@ class TriggerDevice {
 
   factory TriggerDevice.fromJson(Map<String, dynamic> json) => _$TriggerDeviceFromJson(json);
   Map<String, dynamic> toJson() => _$TriggerDeviceToJson(this);
+
+  @override
+  int get hashCode => triggerDeviceId;
+
+  @override
+  bool operator ==(other) => other is TriggerDevice ? other.triggerDeviceId == triggerDeviceId : false;
 }

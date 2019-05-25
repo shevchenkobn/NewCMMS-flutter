@@ -11,6 +11,7 @@ import 'widgets/home_drawer_content.dart';
 import 'widgets/home_user.dart';
 import 'widgets/login.dart';
 import 'widgets/login_drawer_content.dart';
+import 'widgets/trigger_device.dart';
 import 'widgets/trigger_devices.dart';
 
 class ModuleContainer {
@@ -34,6 +35,7 @@ class ModuleContainer {
     injector.map<GeneralSettingsPageState>((i) => GeneralSettingsPageState(i.get<HttpClient>()));
     injector.map<HomeUserState>((i) => HomeUserState(i.get<AuthService>(), i.get<HttpClient>()));
     injector.mapWithParams<TriggerDevicesState>((i, params) => TriggerDevicesState(i.get<TriggerDeviceRepository>(), params[TriggerDevicesState.viewportHeightParamName] as double));
+    injector.map<TriggerDevicePageState>((i) => TriggerDevicePageState(i.get<TriggerDeviceRepository>()));
 
     return injector;
   }
