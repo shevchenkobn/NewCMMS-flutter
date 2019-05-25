@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:newcmms_flutter/utils/common.dart';
 
 import '../di.dart';
 import '../localizations.dart';
@@ -66,46 +67,49 @@ class HomeUserState extends State<HomeUser> {
             ),
           ));
         }),
-      child: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        child: Card(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.email),
-                title: Text(
-                    _authService.user?.email ?? localizations.loading),
-                subtitle: Text(localizations.userEmail),
-              ),
-              ListTile(
-                leading: Icon(Icons.perm_identity),
-                title: Text(
-                    _authService.user?.fullName ?? localizations.loading),
-                subtitle: Text(localizations.userFullName),
-              ),
-              SizedBox(height: 20),
-              Wrap(
-                children: _authService.user?.role.getLocalizedSingleNames(
-                    context).map(
-                      (s) =>
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Chip(
-                          padding: EdgeInsets.all(10),
-                          label: Text(s,
-                              style: TextStyle(
-                                color: Colors.white,
-                              )
+      child: ScrollConfiguration(
+        behavior: NoOverScrollGlow(),
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.email),
+                  title: Text(
+                      _authService.user?.email ?? localizations.loading),
+                  subtitle: Text(localizations.userEmail),
+                ),
+                ListTile(
+                  leading: Icon(Icons.perm_identity),
+                  title: Text(
+                      _authService.user?.fullName ?? localizations.loading),
+                  subtitle: Text(localizations.userFullName),
+                ),
+                SizedBox(height: 20),
+                Wrap(
+                  children: _authService.user?.role.getLocalizedSingleNames(
+                      context).map(
+                        (s) =>
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Chip(
+                            padding: EdgeInsets.all(10),
+                            label: Text(s,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                )
+                            ),
+                            backgroundColor: Colors.pinkAccent,
                           ),
-                          backgroundColor: Colors.pinkAccent,
                         ),
-                      ),
-                ).toList(growable: false) ?? [],
-              ),
-            ],
-          )
+                  ).toList(growable: false) ?? [],
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

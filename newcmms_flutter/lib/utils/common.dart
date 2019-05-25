@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 Future<void> exitGracefully() {
   return SystemNavigator.pop();
@@ -6,4 +7,9 @@ Future<void> exitGracefully() {
 
 typedef void ReturnCallback();
 
-class NoOverScrollGlow
+class NoOverScrollGlow extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
+  }
+}
