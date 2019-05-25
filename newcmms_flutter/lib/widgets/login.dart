@@ -205,8 +205,9 @@ class LoginState extends State<Login> {
   @override
   void dispose() {
     _hideSnackbar();
-    _emailController.dispose();
-    _passwordController.dispose();
+    // Calling dispose explicitly causes bugs in Flutter
+//    _emailController.dispose();
+//    _passwordController.dispose();
     super.dispose();
   }
 

@@ -9,30 +9,30 @@ import '../localizations.dart';
 import 'home.page.dart';
 
 class HomeDrawerContent extends StatefulWidget {
-  final OnItemTapCallback _onItemTap;
+  final RedirectToCallback _redirectTo;
 
-  HomeDrawerContent({@required OnItemTapCallback onItemTap})
-    : assert(onItemTap != null), _onItemTap = onItemTap;
+  HomeDrawerContent({@required RedirectToCallback redirectTo})
+    : assert(redirectTo != null), _redirectTo = redirectTo;
 
   @override
   State<StatefulWidget> createState() {
     return ModuleContainer.getDefault().get<HomeDrawerContentState>(additionalParameters: {
-      HomeDrawerContentState.onItemTapParamName: _onItemTap,
+      HomeDrawerContentState.redirectToParamName: _redirectTo,
     });
   }
 }
 
-typedef void OnItemTapCallback(PageContentType contentType);
+typedef void RedirectToCallback(PageContentType contentType);
 
 class HomeDrawerContentState extends State<HomeDrawerContent> {
-  static const onItemTapParamName = 'onItemTap';
+  static const redirectToParamName = 'redirectTo';
 
   final HttpClient _httpClient;
   final AuthService _authService;
-  final OnItemTapCallback _onItemTap;
+  final RedirectToCallback _redirectTo;
 
-  HomeDrawerContentState(this._httpClient, this._authService, OnItemTapCallback onItemTap)
-    : assert(onItemTap != null), _onItemTap = onItemTap;
+  HomeDrawerContentState(this._httpClient, this._authService, RedirectToCallback redirectTo)
+    : assert(redirectTo != null), _redirectTo = redirectTo;
 
   @override
   void initState() {
@@ -60,14 +60,14 @@ class HomeDrawerContentState extends State<HomeDrawerContent> {
           accountEmail: Text(_authService.user.email ?? localization.loading),
           accountName: Text(_authService.user.fullName ?? localization.loading),
           onDetailsPressed: () {
-            _safeOnItemTap(PageContentType.user);
+            _safeRedirectTo(PageContentType.user);
           },
         ),
         ListTile(
           leading: Icon(Icons.account_circle),
           title: Text(localization.userDrawerItem),
           onTap: () {
-            _safeOnItemTap(PageContentType.user);
+            _safeRedirectTo(PageContentType.user);
           },
         ),
         ListTile(
@@ -81,30 +81,34 @@ class HomeDrawerContentState extends State<HomeDrawerContent> {
           leading: Icon(Icons.playlist_add_check),
           title: Text(localization.triggerHistoryDrawerItem),
           onTap: () {
-            _safeOnItemTap(PageContentType.triggerHistory);
+            _safeRedirectTo(PageContentType.triggerHistory);
           },
         ),
         ListTile(
           leading: Icon(Icons.perm_device_information),
           title: Text(localization.triggerDevicesDrawerItem),
           onTap: () {
-            _safeOnItemTap(PageContentType.triggers);
+            _safeRedirectTo(PageContentType.triggers);
           },
         ),
         ListTile(
           leading: Icon(Icons.settings),
           title: Text(localization.settingsDrawerItem),
           onTap: () {
-            GeneralSettingsPage.navigateTo(context);
+            GeneralSettingsPage.navigateTo(context).then((loggedOut) {
+              if (loggedOut == true) {
+                _safeRedirectTo(PageContentType.login);
+              }
+            });
           },
         )
       ],
     );
   }
 
-  void _safeOnItemTap(PageContentType contentType) {
+  void _safeRedirectTo(PageContentType contentType) {
     try {
-      _onItemTap(contentType);
+      _redirectTo(contentType);
     } catch (error, stackTrace) {
       print('Error while Drawer tap');
       print(error);

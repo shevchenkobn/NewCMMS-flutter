@@ -66,8 +66,8 @@ class HomeUserState extends State<HomeUser> {
                 ),
                 SizedBox(height: 20),
                 Wrap(
-                  children: _authService.user?.role.getLocalizedSingleNames(
-                      context).map(
+                  children: (_authService.user?.role?.getLocalizedSingleNames(
+                      context) ?? []).map(
                         (s) =>
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 10),
@@ -81,7 +81,7 @@ class HomeUserState extends State<HomeUser> {
                             backgroundColor: Colors.pinkAccent,
                           ),
                         ),
-                  ).toList(growable: false) ?? [],
+                  ).toList(growable: false),
                 ),
               ],
             ),

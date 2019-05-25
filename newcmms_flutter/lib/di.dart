@@ -31,8 +31,8 @@ class ModuleContainer {
     injector.mapWithParams<LoginState>((i, params) => LoginState(i.get<AuthService>(), i.get<HttpClient>(), params[LoginState.onFinishParamName]));
     injector.map<HomePageState>((i) => HomePageState(i.get<AuthService>(), i.get<HttpClient>()));
     injector.map<LoginDrawerContentState>((i) => LoginDrawerContentState());
-    injector.mapWithParams<HomeDrawerContentState>((i, params) => HomeDrawerContentState(i.get<HttpClient>(), i.get<AuthService>(), params[HomeDrawerContentState.onItemTapParamName]));
-    injector.map<GeneralSettingsPageState>((i) => GeneralSettingsPageState(i.get<HttpClient>()));
+    injector.mapWithParams<HomeDrawerContentState>((i, params) => HomeDrawerContentState(i.get<HttpClient>(), i.get<AuthService>(), params[HomeDrawerContentState.redirectToParamName]));
+    injector.map<GeneralSettingsPageState>((i) => GeneralSettingsPageState(i.get<HttpClient>(), i.get<AuthService>()));
     injector.map<HomeUserState>((i) => HomeUserState(i.get<AuthService>(), i.get<HttpClient>()));
     injector.mapWithParams<TriggerDevicesState>((i, params) => TriggerDevicesState(i.get<TriggerDeviceRepository>(), params[TriggerDevicesState.viewportHeightParamName] as double));
     injector.map<TriggerDevicePageState>((i) => TriggerDevicePageState(i.get<TriggerDeviceRepository>()));

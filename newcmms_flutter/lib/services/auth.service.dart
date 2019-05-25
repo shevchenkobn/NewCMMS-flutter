@@ -26,10 +26,6 @@ class AuthService {
   String get accessToken => _accessToken;
   bool get hasTokens => _refreshToken != null && _accessToken != null;
   User get user => _user;
-  Future<bool> saveUser(User user) {
-    _user = user;
-    return _prefs.setString(authUserKey, jsonEncode(user.toJson()));
-  }
 
   AuthService(SharedPreferences prefs) {
     _prefs = prefs;
@@ -47,6 +43,11 @@ class AuthService {
 
   static bool isPathWithoutAuth(String path) {
     return path == authPath || path == authRefreshPath;
+  }
+
+  Future<bool> saveUser(User user) {
+    _user = user;
+    return _prefs.setString(authUserKey, jsonEncode(user.toJson()));
   }
 
   Future<void> setTokens({String accessToken, String refreshToken}) async {
@@ -102,6 +103,17 @@ class AuthService {
       throw new ArgumentError.notNull();
     }
     return MapEntry('Authorization', 'Bearer ' + _accessToken);
+  }
+
+  Future<void> logout() async {
+    await Future.wait([
+      _prefs.remove(authUserKey),
+      _prefs.remove(authRefreshTokenKey),
+      _prefs.remove(authAccessTokenKey),
+    ]);
+    _accessToken = null;
+    _refreshToken = null;
+    _user = null;
   }
 
   void _setTokenExpiration() {

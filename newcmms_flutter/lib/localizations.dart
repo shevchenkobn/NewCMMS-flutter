@@ -28,6 +28,10 @@ class AppLocalizations {
 
   String get loading => Intl.message('Loading...', name: 'loading');
 
+  String get dialogYes => Intl.message('Yes', name: 'dialogYes');
+
+  String get dialogNo => Intl.message('No', name: 'dialogNo');
+
   String get unknownError => Intl.message('Unknown error. Try again later.', name: 'unknownError');
 
   String get internetError => Intl.message('Unable to connect to server. Check Internet connection and server accessibility.', name: 'internetError');
@@ -57,6 +61,10 @@ class AppLocalizations {
   String get settingsPageBaseUrlLabel => Intl.message('Server URL', name: 'settingsPageBaseUrlLabel');
 
   String get settingsPageInvalidBaseUrlError => Intl.message('A valid URL is required', name: 'settingsPageInvalidBaseUrlError');
+
+  String get settingsPageLogoutLabel => Intl.message('Log out', name: 'settingsPageLogoutLabel');
+
+  String get settingsPageLogoutPrompt => Intl.message('Are you sure you want to log out?', name: 'settingsPageLogoutPrompt');
 
   String get loginPageTitle {
     return Intl.message('NewCMMS Login', name: 'loginPageTitle');
