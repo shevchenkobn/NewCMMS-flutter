@@ -6,6 +6,7 @@ import '../localizations.dart';
 import '../services/auth.service.dart';
 import '../services/http_client.service.dart';
 import 'home_drawer_content.dart';
+import 'home_user.dart';
 import 'login.dart';
 import 'login_drawer_content.dart';
 
@@ -47,6 +48,7 @@ class HomePageState extends State<HomePage> {
       ),
       drawer: Drawer(
         child: _getDrawerContent(),
+
       ),
       body: _getContent(),
     );
@@ -83,6 +85,8 @@ class HomePageState extends State<HomePage> {
             });
           },
         );
+      case PageContentType.user:
+        return HomeUser();
       default:
         return Center(child: Text('not found'));
     }

@@ -24,7 +24,7 @@ class HomeDrawerContentState extends State<HomeDrawerContent> {
   void initState() {
     super.initState();
     if (_authService.user != null || true) {
-      _httpClient.getCurrentUser().then((user) {
+      _httpClient.refreshCurrentUser().then((user) {
         setState(() {});
       }).catchError((error, stackTrace) {
         print(error);

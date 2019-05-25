@@ -38,7 +38,7 @@ class AppLocalizations {
     return Intl.message('NewCMMS App User', name: 'userPageTitle');
   }
 
-  String get userDrawerItem => Intl.message('Account info', name: 'userDrawerItem');
+  String get userDrawerItem => Intl.message('Account', name: 'userDrawerItem');
 
   String get userLoadError => Intl.message('Failed to load user', name: 'userDrawerUserError');
 
@@ -83,6 +83,14 @@ class AppLocalizations {
   String get loginPageLoginOrPasswordError {
     return Intl.message('Invalid login or password', name: 'loginPageLoginOrPasswordError');
   }
+
+  String get userEmail => Intl.message('Email', name: 'userEmail');
+
+  String get userFullName => Intl.message('Full name', name: 'userFullName');
+
+  String get userRoleEmployee => Intl.message('Employee', name: 'userRoleEmployee');
+
+  String get userRoleAdmin => Intl.message('Admin', name: 'userRoleAdmin');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

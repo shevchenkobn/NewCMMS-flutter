@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../localizations.dart';
 
 part 'user.model.g.dart';
 
@@ -30,6 +33,18 @@ class UserRoles {
       default:
         return '_';
     }
+  }
+
+  List<String> getLocalizedSingleNames(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    final roles = <String>[];
+    if (this & employee != 0) {
+      roles.add(localizations.userRoleEmployee);
+    }
+    if (this & admin != 0) {
+      roles.add(localizations.userRoleAdmin);
+    }
+    return roles;
   }
 
   @override

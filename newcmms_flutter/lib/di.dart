@@ -7,6 +7,7 @@ import 'services/auth.service.dart';
 import 'services/http_client.service.dart';
 import 'widgets/general_settings.page.dart';
 import 'widgets/home_drawer_content.dart';
+import 'widgets/home_user.dart';
 import 'widgets/login.dart';
 import 'widgets/login_drawer_content.dart';
 
@@ -28,6 +29,7 @@ class ModuleContainer {
     injector.map<LoginDrawerContentState>((i) => LoginDrawerContentState());
     injector.map<HomeDrawerContentState>((i) => HomeDrawerContentState(i.get<HttpClient>(), i.get<AuthService>()));
     injector.map<GeneralSettingsPageState>((i) => GeneralSettingsPageState(i.get<HttpClient>()));
+    injector.map<HomeUserState>((i) => HomeUserState(i.get<AuthService>(), i.get<HttpClient>()));
 
     return injector;
   }

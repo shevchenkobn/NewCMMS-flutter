@@ -43,7 +43,7 @@ class HttpClient {
     return _prefs.setString(apiBaseKey, _baseUrl);
   }
 
-  Future<User> getCurrentUser() async {
+  Future<User> refreshCurrentUser() async {
     if (!_authService.hasTokens) {
       throw new StateError('The user is not authorized');
     }

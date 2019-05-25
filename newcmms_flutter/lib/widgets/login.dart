@@ -152,6 +152,7 @@ class LoginState extends State<Login> {
                       }).then((_) {
                         try {
                           _onFinish();
+                          dispose();
                         } catch (error) {
                           print('Error while finishing');
                           print(error);

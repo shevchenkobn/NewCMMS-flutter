@@ -5,3 +5,5 @@ Future<void> exitGracefully() {
 }
 
 typedef void ReturnCallback();
+
+class NoOverScrollGlow
