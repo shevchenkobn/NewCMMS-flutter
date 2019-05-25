@@ -67,8 +67,13 @@ class HttpClient {
   Future<List<TriggerDevice>> getTriggerDevices({bool growableList = true}) async {
     return _dio.get<Map<String, dynamic>>('trigger-devices/')
       .then((response) =>
-        (response.data['triggerDevices'] as List<Map<String, dynamic>>)
+        (response.data['triggerDevices'] as List<dynamic>)
             .map((json) => TriggerDevice.fromJson(json)).toList(growable: growableList)
       );
+  }
+
+  Future<TriggerDevice> getTriggerDevice(int triggerDeviceId) async {
+    final response = await _dio.get<Map<String, dynamic>>('trigger-devices/$triggerDeviceId');
+    return TriggerDevice.fromJson(response.data);
   }
 }

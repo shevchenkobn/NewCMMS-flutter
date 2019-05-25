@@ -124,6 +124,9 @@ class HomeUserState extends State<HomeUser> {
         textColor: Colors.redAccent,
       ),
     ));
+    _snackbar.closed.then((_) {
+      _snackbar = null;
+    });
   }
 
   void _setStateSafely({VoidCallback cb}) {

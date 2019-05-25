@@ -33,7 +33,7 @@ class ModuleContainer {
     injector.mapWithParams<HomeDrawerContentState>((i, params) => HomeDrawerContentState(i.get<HttpClient>(), i.get<AuthService>(), params[HomeDrawerContentState.onItemTapParamName]));
     injector.map<GeneralSettingsPageState>((i) => GeneralSettingsPageState(i.get<HttpClient>()));
     injector.map<HomeUserState>((i) => HomeUserState(i.get<AuthService>(), i.get<HttpClient>()));
-    injector.map<TriggerDevicesState>((i) => TriggerDevicesState(i.get<TriggerDeviceRepository>()));
+    injector.mapWithParams<TriggerDevicesState>((i, params) => TriggerDevicesState(i.get<TriggerDeviceRepository>(), params[TriggerDevicesState.viewportHeightParamName] as double));
 
     return injector;
   }

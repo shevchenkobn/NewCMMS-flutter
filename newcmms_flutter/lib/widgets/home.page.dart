@@ -9,6 +9,7 @@ import 'home_drawer_content.dart';
 import 'home_user.dart';
 import 'login.dart';
 import 'login_drawer_content.dart';
+import 'trigger_devices.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/';
@@ -25,6 +26,7 @@ class HomePageState extends State<HomePage> {
   final AuthService _authService;
   final HttpClient _httpClient;
   PageContentType _contentType;
+  AppBar _appBar;
 
   HomePageState(this._authService, this._httpClient);
 
@@ -42,10 +44,11 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _appBar = AppBar(
+      title: Text(_getTitle()),
+    );
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_getTitle()),
-      ),
+      appBar: _appBar,
       drawer: Drawer(
         child: _getDrawerContent(),
 
@@ -96,8 +99,17 @@ class HomePageState extends State<HomePage> {
         );
       case PageContentType.user:
         return HomeUser();
+      case PageContentType.triggers:
+        return TriggerDevices(_getViewportHeight());
       default:
         return Center(child: Text('not found'));
     }
+  }
+
+  double _getViewportHeight() {
+    if (_appBar == null) {
+      return 228;
+    }
+    return MediaQuery.of(context).size.height - _appBar.preferredSize.height;
   }
 }

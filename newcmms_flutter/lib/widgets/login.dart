@@ -183,6 +183,9 @@ class LoginState extends State<Login> {
                             textColor: Colors.redAccent,
                           ),
                         ));
+                        _snackbar.closed.then((_) {
+                          _snackbar = null;
+                        });
                       });
                     },
                     child: Text(AppLocalizations

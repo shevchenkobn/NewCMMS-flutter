@@ -1,4 +1,7 @@
+import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../localizations.dart';
 
 part 'trigger_device.model.g.dart';
 
@@ -24,6 +27,15 @@ class TriggerDeviceStatus {
         return 'disconnected';
       default:
         return '_';
+    }
+  }
+
+  String toLocalizedString(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    if (this == connected) {
+      return localizations.triggerDeviceStatusConnected;
+    } else {
+      return localizations.triggerDeviceStatusDisconnected;
     }
   }
 
