@@ -7,6 +7,7 @@ import 'models/trigger_device.repository.dart';
 import 'models/user_trigger.repository.dart';
 import 'services/auth.service.dart';
 import 'services/http_client.service.dart';
+import 'services/nfc_hce.service.dart';
 import 'widgets/general_settings.page.dart';
 import 'widgets/home_drawer_content.dart';
 import 'widgets/home_user.dart';
@@ -27,6 +28,7 @@ class ModuleContainer {
     injector.map<SharedPreferences>((i) => prefs, isSingleton: true);
 
     injector.map<AuthService>((i) => AuthService(i.get<SharedPreferences>()), isSingleton: true);
+    injector.map<NfcHceService>((i) => NfcHceService(i.get<AuthService>()), isSingleton: true);
     injector.map<HttpClient>((i) => HttpClient(i.get<SharedPreferences>(), i.get<AuthService>()), isSingleton: true);
     injector.map<TriggerDeviceRepository>((i) => TriggerDeviceRepository(i.get<HttpClient>()), isSingleton: true);
     injector.map<UserTriggerRepository>((i) => UserTriggerRepository(i.get<HttpClient>()), isSingleton: true);

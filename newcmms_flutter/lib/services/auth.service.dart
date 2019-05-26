@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import '../models/user.model.dart';
@@ -15,6 +16,7 @@ class AuthService {
 
   String _refreshToken;
   String _accessToken;
+  StreamController<String> _accessTokenChange;
   DateTime _accessTokenExpiration;
   SharedPreferences _prefs;
   Future<String> _tokenRefresher;
@@ -24,6 +26,7 @@ class AuthService {
       _accessTokenExpiration == null ||
           _accessTokenExpiration.isBefore(DateTime.now());
   String get accessToken => _accessToken;
+  Stream<String> get accessTokenChange => _accessTokenChange.stream;
   bool get hasTokens => _refreshToken != null && _accessToken != null;
   User get user => _user;
 
@@ -32,9 +35,11 @@ class AuthService {
     if (_prefs.containsKey(authRefreshTokenKey)) {
       _refreshToken = _prefs.getString(authRefreshTokenKey);
     }
+    _accessTokenChange = new StreamController.broadcast();
     if (_prefs.containsKey(authAccessTokenKey)) {
       _accessToken = _prefs.getString(authAccessTokenKey);
       _setTokenExpiration();
+      _accessTokenChange.add(_accessToken);
     }
     if (_prefs.containsKey(authUserKey)) {
       _user = User.fromJson(jsonDecode(_prefs.getString(authUserKey)));
@@ -58,8 +63,9 @@ class AuthService {
       throw new ArgumentError.notNull('refreshToken');
     }
     _accessToken = accessToken;
-    _refreshToken = refreshToken;
     _setTokenExpiration();
+    _accessTokenChange.add(accessToken);
+    _refreshToken = refreshToken;
     await Future.wait([
         _prefs.setString(authAccessTokenKey, _accessToken),
         _prefs.setString(authRefreshTokenKey, _refreshToken),
@@ -112,6 +118,7 @@ class AuthService {
       _prefs.remove(authAccessTokenKey),
     ]);
     _accessToken = null;
+    _accessTokenChange.add(_accessToken);
     _refreshToken = null;
     _user = null;
   }
