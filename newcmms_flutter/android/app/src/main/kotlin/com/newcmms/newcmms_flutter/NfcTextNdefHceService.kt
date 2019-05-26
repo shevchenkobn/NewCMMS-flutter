@@ -6,12 +6,16 @@ import android.nfc.NdefRecord
 import android.nfc.cardemulation.HostApduService
 import android.os.Binder
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import java.util.*
+
+
 
 class NfcTextNdefHceService : HostApduService() {
     companion object {
         val TAG = NfcTextNdefHceService::class.java.name
+        val NDEF_KEY = "ndefMessage"
 
         private val NFC_TAG_APP_SELECT_COMMAND = byteArrayOf(
                 0x00.toByte(), // CLA	- Class - Class of instruction
@@ -94,6 +98,7 @@ class NfcTextNdefHceService : HostApduService() {
     private var _stringValue: String = ""
     private var _ndefBytes = NdefMessage(NdefRecord.createTextRecord("", "")).toByteArray()
     private var _hasSelectedNdef = false
+    private val _binder: IBinder = NfcServiceBinder()
 
     var stringValue: String
         get() = _stringValue
