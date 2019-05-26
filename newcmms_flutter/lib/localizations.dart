@@ -128,6 +128,16 @@ class AppLocalizations {
   String get userTriggerTypeEnter => Intl.message('Entered', name: 'userTriggerTypeEnter');
 
   String get userTriggerTypeLeft => Intl.message('Left', name: 'userTriggerTypeLeft');
+
+  String get nfcTitle => Intl.message('NFC check-in', name: 'nfcTitle');
+
+  String get nfcDisabledMessage => Intl.message('NFC is disabled', name: 'nfcDisabledMessage');
+
+  String get nfcSettingsButton => Intl.message('Open NFC settings', name: 'nfcSettingsButton');
+
+  String get nfcServiceRunning => Intl.message('Up and running', name: 'nfcServiceRunning');
+
+  String get nfcServiceStopped => Intl.message('Stopped', name: 'nfcServiceStopped');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

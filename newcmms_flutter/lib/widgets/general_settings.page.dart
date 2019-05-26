@@ -185,6 +185,9 @@ class GeneralSettingsPageState extends State<GeneralSettingsPage> {
         ),
       ),
     );
+    _snackbar.closed.whenComplete(() {
+      _snackbar = null;
+    });
   }
 
   void _hideSnackbar() {
