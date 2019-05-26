@@ -9,9 +9,16 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 
 
-class MainActivity: FlutterActivity() {
+class MainActivity : FlutterActivity() {
   private val CHANNEL = "com.newcmms/nfc_hce"
   private val NFEF_STRING_PARAM_NAME = "ndefValue"
+  private val IS_NFC_ENABLED_METHOD = "isNfcEnabled"
+  private val IS_SERVICE_RUNNING_METHOD = "isServiceRunning"
+  private val OPEN_NFC_SETTINGS_METHOD = "openNfcSettings"
+  private val SET_NEW_STRING_VALUE_METHOD = "setNewStringValue"
+  private val START_SERVICE_METHOD = "startService"
+  private val STOP_SERVICE_METHOD = "stopService"
+
   private lateinit var _stringValue: String
   private var _isNfcServiceRunning = false
 
@@ -23,22 +30,30 @@ class MainActivity: FlutterActivity() {
     MethodChannel(flutterView, CHANNEL).setMethodCallHandler { call, result ->
       try {
         when (call.method) {
-          "isNfcEnabled" -> {
+          IS_NFC_ENABLED_METHOD -> {
             result.success(isNfcEnabled())
           }
-          "isServiceRunning" -> {
+          IS_SERVICE_RUNNING_METHOD -> {
             result.success(_isNfcServiceRunning)
           }
-          "openNfcSettings" -> {
+          OPEN_NFC_SETTINGS_METHOD -> {
             startNfcSettingsActivity()
             result.success(null)
           }
-          "setNewStringValue" -> {
+          SET_NEW_STRING_VALUE_METHOD -> {
             if (!call.hasArgument(NFEF_STRING_PARAM_NAME) || call.argument<String>(NFEF_STRING_PARAM_NAME) == null) {
               result.notImplemented()
             } else {
               setNewStringValue(call.argument<String>(NFEF_STRING_PARAM_NAME) as String)
             }
+          }
+          START_SERVICE_METHOD -> {
+            startNfcService();
+            result.success(null);
+          }
+          STOP_SERVICE_METHOD -> {
+            stopNfcService();
+            result.success(null);
           }
           else -> result.notImplemented()
         }

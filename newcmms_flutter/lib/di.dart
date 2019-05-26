@@ -13,6 +13,7 @@ import 'widgets/home_drawer_content.dart';
 import 'widgets/home_user.dart';
 import 'widgets/login.dart';
 import 'widgets/login_drawer_content.dart';
+import 'widgets/nfc_hce.page.dart';
 import 'widgets/trigger_device.dart';
 import 'widgets/trigger_devices.dart';
 import 'widgets/user_triggers.dart';
@@ -42,6 +43,7 @@ class ModuleContainer {
     injector.mapWithParams<TriggerDevicesState>((i, params) => TriggerDevicesState(i.get<TriggerDeviceRepository>(), params[TriggerDevicesState.viewportHeightParamName] as double));
     injector.map<TriggerDevicePageState>((i) => TriggerDevicePageState(i.get<TriggerDeviceRepository>()));
     injector.mapWithParams<UserTriggersState>((i, params) => UserTriggersState(i.get<UserTriggerRepository>(), i.get<TriggerDeviceRepository>(), params[UserTriggersState.viewportHeightParamName] as double));
+    injector.map<NfcHcePageState>((i) => NfcHcePageState(i.get<NfcHceService>()));
 
     return injector;
   }

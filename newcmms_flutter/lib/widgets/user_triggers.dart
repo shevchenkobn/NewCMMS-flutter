@@ -66,7 +66,7 @@ class UserTriggersState extends State<UserTriggers> {
         _setStateSafely();
       }).catchError(_handleError),
       child: _getListBody(),
-    );;
+    );
   }
 
   @override
