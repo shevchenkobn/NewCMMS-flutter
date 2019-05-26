@@ -4,6 +4,7 @@ import 'package:newcmms_flutter/widgets/home.page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/trigger_device.repository.dart';
+import 'models/user_trigger.repository.dart';
 import 'services/auth.service.dart';
 import 'services/http_client.service.dart';
 import 'widgets/general_settings.page.dart';
@@ -27,6 +28,7 @@ class ModuleContainer {
     injector.map<AuthService>((i) => AuthService(i.get<SharedPreferences>()), isSingleton: true);
     injector.map<HttpClient>((i) => HttpClient(i.get<SharedPreferences>(), i.get<AuthService>()), isSingleton: true);
     injector.map<TriggerDeviceRepository>((i) => TriggerDeviceRepository(i.get<HttpClient>()), isSingleton: true);
+    injector.map<UserTriggerRepository>((i) => UserTriggerRepository(i.get<HttpClient>()), isSingleton: true);
 
     injector.mapWithParams<LoginState>((i, params) => LoginState(i.get<AuthService>(), i.get<HttpClient>(), params[LoginState.onFinishParamName]));
     injector.map<HomePageState>((i) => HomePageState(i.get<AuthService>(), i.get<HttpClient>()));
