@@ -1,8 +1,10 @@
 package com.newcmms.newcmms_flutter
 
+import android.content.Intent
 import android.nfc.NdefMessage
 import android.nfc.NdefRecord
 import android.nfc.cardemulation.HostApduService
+import android.os.Binder
 import android.os.Bundle
 import android.util.Log
 import java.util.*
@@ -93,8 +95,6 @@ class NfcTextNdefHceService : HostApduService() {
     private var _ndefBytes = NdefMessage(NdefRecord.createTextRecord("", "")).toByteArray()
     private var _hasSelectedNdef = false
 
-//    val hasReadCompantibilityContainer
-//        get() = _hasSelectedNdef
     var stringValue: String
         get() = _stringValue
         set(value) {
@@ -105,6 +105,11 @@ class NfcTextNdefHceService : HostApduService() {
             _stringValue = value
             _ndefBytes = ndefBytes
         }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.i(TAG, ::onStartCommand.name)
+        return super.onStartCommand(intent, flags, startId)
+    }
 
     override fun processCommandApdu(commandApdu: ByteArray?, extras: Bundle?): ByteArray {
         Log.i(TAG, "processCommandApdu() | incoming commandApdu: " + commandApdu?.toHex())
@@ -157,6 +162,12 @@ class NfcTextNdefHceService : HostApduService() {
 
     override fun onDeactivated(reason: Int) {
         Log.i(TAG, "NFC HCE deactivated due to reason $reason")
+    }
+
+    inner class NfcServiceBinder : Binder() {
+        fun getService(): NfcTextNdefHceService {
+            return this@NfcTextNdefHceService
+        }
     }
 }
 

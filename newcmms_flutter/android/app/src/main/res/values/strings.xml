@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="servicedesc">Emulation NFC NDEF tag service</string>
+    <string name="aiddescription">Emulation NFC NDEF tag service</string>
 </resources>
