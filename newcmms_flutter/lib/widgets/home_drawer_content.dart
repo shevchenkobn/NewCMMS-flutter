@@ -7,6 +7,7 @@ import 'general_settings.page.dart';
 import '../di.dart';
 import '../localizations.dart';
 import 'home.page.dart';
+import 'nfc_hce.page.dart';
 
 class HomeDrawerContent extends StatefulWidget {
   final RedirectToCallback _redirectTo;
@@ -74,7 +75,7 @@ class HomeDrawerContentState extends State<HomeDrawerContent> {
           leading: Icon(Icons.nfc),
           title: Text(localization.checkInDrawerItem),
           onTap: () {
-//            _safeOnItemTap(PageContentType.user);
+            NfcHcePage.navigateTo(context);
           },
         ),
         ListTile(

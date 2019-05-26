@@ -5,6 +5,10 @@ import '../services/nfc_hce.service.dart';
 import '../localizations.dart';
 
 class NfcHcePage extends StatefulWidget {
+  static const routeName = 'nfc-hce/';
+  static Future<dynamic> navigateTo(BuildContext context) => Navigator.pushNamed(context, routeName);
+  static bool _navigateFrom(BuildContext context) => Navigator.pop(context);
+
   @override
   State<StatefulWidget> createState() {
     return ModuleContainer.getDefault().get<NfcHcePageState>();
@@ -17,6 +21,7 @@ class NfcHcePageState extends State<NfcHcePage> {
   bool _isNfcServiceRunning;
   bool _isLoading;
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> _snackbar;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   NfcHcePageState(this._nfcHceService)
       : _isNfcEnabled = null,
@@ -32,6 +37,7 @@ class NfcHcePageState extends State<NfcHcePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).nfcTitle),
       ),
@@ -108,11 +114,12 @@ class NfcHcePageState extends State<NfcHcePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            Text(localization.nfcDisabledMessage),
             RaisedButton(
               child: Text(localization.nfcSettingsButton),
               onPressed: () {
-                _nfcHceService.openNfcSettings()
-                    .then((_) => _setStateSafely())
+                _refreshAfter(_nfcHceService.openNfcSettings())
+                    .whenComplete(() => _setStateSafely())
                     .catchError(_showUnknownError);
               },
             ),
@@ -130,15 +137,20 @@ class NfcHcePageState extends State<NfcHcePage> {
           _setStateSafely(cb: () {
             _isLoading = true;
           });
-          final future = newValue ? _nfcHceService.startService() : _nfcHceService.stopService();
-          future.catchError(_showUnknownError).whenComplete(() {
-            _setStateSafely(cb: () {
-              _isLoading = false;
+          _refreshAfter(newValue ? _nfcHceService.startService() : _nfcHceService.stopService())
+            .catchError(_showUnknownError).whenComplete(() {
+              _setStateSafely(cb: () {
+                _isLoading = false;
+              });
             });
-          });
         }
       ),
     );
+  }
+
+  Future<void> _refreshAfter(Future<dynamic> first) async {
+    await first;
+    await _refresh();
   }
 
   Future<void> _loopRefresh() async {
@@ -172,7 +184,7 @@ class NfcHcePageState extends State<NfcHcePage> {
     print(stackTrace);
     final localization = AppLocalizations.of(context);
     _hideSnackbar();
-    _snackbar = Scaffold.of(context).showSnackBar(
+    _snackbar = _scaffoldKey.currentState.showSnackBar(
       SnackBar(
         content: Text(localization.unknownError),
         duration: Duration(days: 10),

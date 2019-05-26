@@ -6,6 +6,7 @@ import 'localizations.dart';
 import 'widgets/general_settings.page.dart';
 import 'widgets/home.page.dart';
 import 'widgets/login.dart';
+import 'widgets/nfc_hce.page.dart';
 import 'widgets/trigger_device.dart';
 
 void main() {
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         HomePage.routeName: (context) => HomePage(),
         GeneralSettingsPage.routeName: (context) => GeneralSettingsPage(),
         TriggerDevicePage.routeName: (context) => TriggerDevicePage(),
+        NfcHcePage.routeName: (context) => NfcHcePage(),
       },
     );
   }

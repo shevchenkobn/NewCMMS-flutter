@@ -15,6 +15,7 @@ class NfcHceService {
   final AuthService _authService;
 
   NfcHceService(this._authService) {
+    _loopForceSetToken();
     _authService.accessTokenChange.listen((newToken) {
       forceSetToken().catchError((error, stackTrace) {
         print('Update HCE token error');
@@ -50,5 +51,18 @@ class NfcHceService {
 
   Future<void> stopService() {
     return _platform.invokeMethod(_stopServiceMethod);
+  }
+
+  Future<void> _loopForceSetToken() async {
+    while (true) {
+      try {
+        await forceSetToken();
+        return;
+      } catch (error, stackTrace) {
+        print('Update HCE token error');
+        print(error);
+        print(stackTrace);
+      }
+    }
   }
 }
