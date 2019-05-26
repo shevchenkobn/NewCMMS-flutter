@@ -1,11 +1,17 @@
 package com.newcmms.newcmms_flutter
 
+import android.nfc.NdefMessage
+import android.nfc.NdefRecord
 import android.nfc.cardemulation.HostApduService
 import android.os.Bundle
+import android.util.Log
+import java.util.*
 
 class NfcTextNdefHceService : HostApduService() {
     companion object {
-        private val APDU_SELECT = byteArrayOf(
+        val TAG = NfcTextNdefHceService::class.java.name
+
+        private val NFC_TAG_APP_SELECT_COMMAND = byteArrayOf(
                 0x00.toByte(), // CLA	- Class - Class of instruction
                 0xA4.toByte(), // INS	- Instruction - Instruction code
                 0x04.toByte(), // P1	- Parameter 1 - Instruction parameter 1
@@ -15,7 +21,7 @@ class NfcTextNdefHceService : HostApduService() {
                 0x00.toByte()  // Le field	- Maximum number of bytes expected in the data field of the response to the command
         )
 
-        private val CAPABILITY_CONTAINER_OK = byteArrayOf(
+        private val CAPABILITY_CONTAINER_SELECT_COMMAND = byteArrayOf(
                 0x00.toByte(), // CLA	- Class - Class of instruction
                 0xa4.toByte(), // INS	- Instruction - Instruction code
                 0x00.toByte(), // P1	- Parameter 1 - Instruction parameter 1
@@ -24,30 +30,75 @@ class NfcTextNdefHceService : HostApduService() {
                 0xe1.toByte(), 0x03.toByte() // file identifier of the CC file
         )
 
-        private val A_OKAY = byteArrayOf(
+        private val OKAY_RESPONSE = byteArrayOf(
                 0x90.toByte(), // SW1	Status byte 1 - Command processing status
                 0x00.toByte()   // SW2	Status byte 2 - Command processing qualifier
         )
 
-        private val A_ERROR = byteArrayOf(
+        private val ERROR_RESPONSE = byteArrayOf(
                 0x6A.toByte(), // SW1	Status byte 1 - Command processing status
                 0x82.toByte()   // SW2	Status byte 2 - Command processing qualifier
         )
+
+        fun getNdefStringMessageBytes(value: String): ByteArray =
+            NdefMessage(NdefRecord.createTextRecord("", "")).toByteArray()
+
+        fun isValidStringMessage(bytes: ByteArray): Boolean = bytes.size in 5..0xfffe
     }
 
     private var _stringValue: String = ""
+    private var _ndefBytes = NdefMessage(NdefRecord.createTextRecord("", "")).toByteArray()
+    private var _hasReadCompatibilityContainer = false
 
+    val hasReadCompantibilityContainer
+        get() = _hasReadCompatibilityContainer
     var stringValue: String
         get() = _stringValue
         set(value) {
-            _stringValue = value;
+            val ndefBytes = getNdefStringMessageBytes(value)
+            if (!isValidStringMessage(ndefBytes)) {
+                throw IllegalArgumentException("Value must be valid NDEF message")
+            }
+            _stringValue = value
+            _ndefBytes = ndefBytes
         }
 
     override fun processCommandApdu(commandApdu: ByteArray?, extras: Bundle?): ByteArray {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.i(TAG, "processCommandApdu() | incoming commandApdu: " + commandApdu?.toHex())
+
+        if (Arrays.equals(commandApdu, NFC_TAG_APP_SELECT_COMMAND)) {
+            Log.i(TAG, "NFC_TAG_APP_SELECT_COMMAND triggered. Our Response: " + OKAY_RESPONSE.toHex())
+            return OKAY_RESPONSE
+        }
+
+        if (Arrays.equals(commandApdu, CAPABILITY_CONTAINER_SELECT_COMMAND)) {
+            Log.i(TAG, "CAPABILITY_CONTAINER_SELECT_COMMAND triggered. Our Response: " + OKAY_RESPONSE.toHex())
+            return OKAY_RESPONSE
+        }
+
+
+
+        Log.wtf(TAG, "processCommandApdu() | I don't know what's going on!!!")
+        return ERROR_RESPONSE
     }
 
     override fun onDeactivated(reason: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.d(TAG, "NFC HCE deactivated due to reason $reason")
     }
+}
+
+private val HEX_CHARS = "0123456789ABCDEF".toCharArray()
+
+fun ByteArray.toHex() : String{
+    val result = StringBuffer()
+
+    forEach {
+        val octet = it.toInt()
+        val firstIndex = (octet and 0xF0).ushr(4)
+        val secondIndex = octet and 0x0F
+        result.append(HEX_CHARS[firstIndex])
+        result.append(HEX_CHARS[secondIndex])
+    }
+
+    return result.toString()
 }
