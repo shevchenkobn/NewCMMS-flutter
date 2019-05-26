@@ -10,6 +10,7 @@ import 'home_user.dart';
 import 'login.dart';
 import 'login_drawer_content.dart';
 import 'trigger_devices.dart';
+import 'user_triggers.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/';
@@ -24,11 +25,10 @@ enum PageContentType {
 
 class HomePageState extends State<HomePage> {
   final AuthService _authService;
-  final HttpClient _httpClient;
   PageContentType _contentType;
   AppBar _appBar;
 
-  HomePageState(this._authService, this._httpClient);
+  HomePageState(this._authService);
 
   @override
   void initState() {
@@ -65,6 +65,8 @@ class HomePageState extends State<HomePage> {
         return localizations.loginPageTitle;
       case PageContentType.triggers:
         return localizations.triggerDevicesPageTitle;
+      case PageContentType.triggerHistory:
+        return localizations.userTriggersPageTitle;
       default:
         return localizations.title;
     }
@@ -105,8 +107,10 @@ class HomePageState extends State<HomePage> {
         return HomeUser();
       case PageContentType.triggers:
         return TriggerDevices(_getViewportHeight());
+      case PageContentType.triggerHistory:
+        return UserTriggers(_getViewportHeight());
       default:
-        return Center(child: Text('not found'));
+        throw new StateError('Content for $_contentType is not found!');
     }
   }
 

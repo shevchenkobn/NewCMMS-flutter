@@ -25,19 +25,19 @@ class TriggerDevices extends StatefulWidget {
 
 class TriggerDevicesState extends State<TriggerDevices> {
   static const viewportHeightParamName = 'viewportHeight';
-  final TriggerDeviceRepository _triggerDeviceStore;
+  final TriggerDeviceRepository _triggerDeviceRepository;
   final double _viewportHeight;
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> _snackbar;
   Future<UnmodifiableListView<TriggerDevice>> _loadFuture;
 
-  TriggerDevicesState(this._triggerDeviceStore, double viewportHeight)
+  TriggerDevicesState(this._triggerDeviceRepository, double viewportHeight)
     : assert(viewportHeight != null), _viewportHeight = viewportHeight;
 
   @override
   void initState() {
     super.initState();
-    if (_triggerDeviceStore.list == null) {
-      _loadFuture = _triggerDeviceStore.refresh();
+    if (_triggerDeviceRepository.list == null) {
+      _loadFuture = _triggerDeviceRepository.refresh();
       _loadFuture.catchError(_handleError)
           .whenComplete(() {
             _loadFuture = null;
@@ -48,7 +48,22 @@ class TriggerDevicesState extends State<TriggerDevices> {
 
   @override
   Widget build(BuildContext context) {
-    return _getBody();
+    if (_loadFuture != null) {
+      return Align(
+        alignment: Alignment(0, -0.3),
+        child: CircularProgressIndicator(
+          value: null,
+        ),
+      );
+    } else {
+      return RefreshIndicator(
+        onRefresh: () => _triggerDeviceRepository.refresh().then((devices) {
+          _hideSnackbar();
+          _setStateSafely();
+        }).catchError(_handleError),
+        child: _getListBody(),
+      );
+    }
   }
 
   @override
@@ -63,28 +78,9 @@ class TriggerDevicesState extends State<TriggerDevices> {
     }
   }
 
-  Widget _getBody() {
-    if (_loadFuture != null) {
-      return Align(
-        alignment: Alignment(0, -0.3),
-        child: CircularProgressIndicator(
-          value: null,
-        ),
-      );
-    } else {
-      return RefreshIndicator(
-        onRefresh: () => _triggerDeviceStore.refresh().then((devices) {
-          _hideSnackbar();
-          _setStateSafely();
-        }).catchError(_handleError),
-        child: _getListBody(),
-      );
-    }
-  }
-
   Widget _getListBody() {
     final localization = AppLocalizations.of(context);
-    if (_triggerDeviceStore.list == null || _triggerDeviceStore.list.length == 0) {
+    if (_triggerDeviceRepository.list == null || _triggerDeviceRepository.list.length == 0) {
       return ScrollConfiguration(
         behavior: NoOverScrollGlow(),
         child: SingleChildScrollView(
@@ -93,9 +89,7 @@ class TriggerDevicesState extends State<TriggerDevices> {
             height: _viewportHeight,
             child: Align(
               alignment: Alignment(0, -0.3),
-              child: Text(AppLocalizations
-                .of(context)
-                .nothingFound)
+              child: Text(localization.nothingFound)
             ),
           ),
         ),
@@ -103,9 +97,9 @@ class TriggerDevicesState extends State<TriggerDevices> {
     } else {
       return ListView.builder(
         physics: AlwaysScrollableScrollPhysics(),
-        itemCount: _triggerDeviceStore.list.length,
+        itemCount: _triggerDeviceRepository.list.length,
         itemBuilder: (context, index) {
-          final device = _triggerDeviceStore.list[index];
+          final device = _triggerDeviceRepository.list[index];
           return InkWell(
             onTap: () {
               TriggerDevicePage.navigateTo(context, device);

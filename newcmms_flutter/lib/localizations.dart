@@ -1,12 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import 'l10n/messages_all.dart';
 
 class AppLocalizations {
-  static Future<AppLocalizations> load(Locale locale) {
+  static Future<AppLocalizations> load(Locale locale) async {
     final String name =
     locale.countryCode == null ? locale.languageCode : locale.toString();
     final String localeName = Intl.canonicalizedLocale(name);
@@ -115,6 +116,18 @@ class AppLocalizations {
   String get triggerDeviceStatusConnected => Intl.message('Connected', name: 'triggerDeviceStatusConnected');
 
   String get triggerDeviceStatusDisconnected => Intl.message('Disconnected', name: 'triggerDeviceStatusDisconnected');
+
+  String get userTriggersPageTitle => Intl.message('Trigger history', name: 'userTriggersPageTitle');
+  
+  String get userTriggerTriggerDeviceName => Intl.message('Trigger device name', name: 'userTriggerTriggerDeviceName');
+
+  String get userTriggerTriggerDeviceNameUnknown => Intl.message('Unknown', name: 'userTriggerTriggerDeviceNameUnknown');
+  
+  String get userTriggerTypeUnspecified => Intl.message('Unspecified', name: 'userTriggerTypeUnspecified');
+
+  String get userTriggerTypeEnter => Intl.message('Entered', name: 'userTriggerTypeEnter');
+
+  String get userTriggerTypeLeft => Intl.message('Left', name: 'userTriggerTypeLeft');
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

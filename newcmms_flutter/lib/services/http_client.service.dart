@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:newcmms_flutter/models/trigger_device.model.dart';
+import 'package:newcmms_flutter/models/user_trigger.model.dart';
 import 'package:validators/validators.dart';
 import 'package:dio_flutter_transformer/dio_flutter_transformer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -77,11 +78,11 @@ class HttpClient {
     return TriggerDevice.fromJson(response.data);
   }
 
-  Future<List<TriggerDevice>> getUserTriggers(int userId, {bool growableList = true}) async {
-    return _dio.get<Map<String, dynamic>>('users/')
+  Future<List<UserTrigger>> getUserTriggers({bool growableList = true}) async {
+    return _dio.get<Map<String, dynamic>>('auth/identity/trigger-history/')
         .then((response) =>
-        (response.data['triggerDevices'] as List<dynamic>)
-            .map((json) => TriggerDevice.fromJson(json)).toList(growable: growableList)
+        (response.data['userTriggers'] as List<dynamic>)
+            .map((json) => UserTrigger.fromJson(json)).toList(growable: growableList)
     );
   }
 }

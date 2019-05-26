@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../localizations.dart';
 
 part 'user_trigger.model.g.dart';
 
@@ -27,6 +30,17 @@ class UserTriggerType {
         return 'leave';
       default:
         return '_';
+    }
+  }
+
+  String toLocalizedString(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    if (this == enter) {
+      return localizations.userTriggerTypeEnter;
+    } else if (this == leave) {
+      return localizations.userTriggerTypeLeft;
+    } else {
+      return localizations.userTriggerTypeUnspecified;
     }
   }
 

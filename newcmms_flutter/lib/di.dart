@@ -14,6 +14,7 @@ import 'widgets/login.dart';
 import 'widgets/login_drawer_content.dart';
 import 'widgets/trigger_device.dart';
 import 'widgets/trigger_devices.dart';
+import 'widgets/user_triggers.dart';
 
 class ModuleContainer {
   static Injector getDefault() => Injector.getInjector();
@@ -31,13 +32,14 @@ class ModuleContainer {
     injector.map<UserTriggerRepository>((i) => UserTriggerRepository(i.get<HttpClient>()), isSingleton: true);
 
     injector.mapWithParams<LoginState>((i, params) => LoginState(i.get<AuthService>(), i.get<HttpClient>(), params[LoginState.onFinishParamName]));
-    injector.map<HomePageState>((i) => HomePageState(i.get<AuthService>(), i.get<HttpClient>()));
+    injector.map<HomePageState>((i) => HomePageState(i.get<AuthService>()));
     injector.map<LoginDrawerContentState>((i) => LoginDrawerContentState());
     injector.mapWithParams<HomeDrawerContentState>((i, params) => HomeDrawerContentState(i.get<HttpClient>(), i.get<AuthService>(), params[HomeDrawerContentState.redirectToParamName]));
     injector.map<GeneralSettingsPageState>((i) => GeneralSettingsPageState(i.get<HttpClient>(), i.get<AuthService>()));
     injector.map<HomeUserState>((i) => HomeUserState(i.get<AuthService>(), i.get<HttpClient>()));
     injector.mapWithParams<TriggerDevicesState>((i, params) => TriggerDevicesState(i.get<TriggerDeviceRepository>(), params[TriggerDevicesState.viewportHeightParamName] as double));
     injector.map<TriggerDevicePageState>((i) => TriggerDevicePageState(i.get<TriggerDeviceRepository>()));
+    injector.mapWithParams<UserTriggersState>((i, params) => UserTriggersState(i.get<UserTriggerRepository>(), i.get<TriggerDeviceRepository>(), params[UserTriggersState.viewportHeightParamName] as double));
 
     return injector;
   }
