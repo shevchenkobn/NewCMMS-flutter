@@ -30,6 +30,29 @@ class NfcTextNdefHceService : HostApduService() {
                 0xe1.toByte(), 0x03.toByte() // file identifier of the CC file
         )
 
+        private val CAPABILITY_CONTAINER_READ_FIRST_16_COMMAND = byteArrayOf(
+                0x00.toByte(), // CLA	- Class - Class of instruction
+                0xb0.toByte(), // INS	- Instruction - Instruction code
+                0x00.toByte(), // P1	- Parameter 1 - Instruction parameter 1
+                0x00.toByte(), // P2	- Parameter 2 - Instruction parameter 2
+                0x0f.toByte()  // Lc field	- Number of bytes present in the data field of the command
+        )
+
+        // FIXME: check this shit
+        private val CAPABILITY_CONTAINER_READ_RESPONSE = byteArrayOf(
+                0x00.toByte(), 0x11.toByte(), // CCLEN length of the CC file
+                0x20.toByte(), // Mapping Version 2.0
+                0xFF.toByte(), 0xFF.toByte(), // MLe maximum
+                0xFF.toByte(), 0xFF.toByte(), // MLc maximum
+                0x04.toByte(), // T field of the NDEF File Control TLV
+                0x06.toByte(), // L field of the NDEF File Control TLV
+                0xE1.toByte(), 0x04.toByte(), // File Identifier of NDEF file
+                0xFF.toByte(), 0xFE.toByte(), // Maximum NDEF file size of 65534 bytes
+                0x00.toByte(), // Read access without any security
+                0xFF.toByte(), // Write access without any security
+                0x90.toByte(), 0x00.toByte() // A_OKAY
+        )
+
         private val OKAY_RESPONSE = byteArrayOf(
                 0x90.toByte(), // SW1	Status byte 1 - Command processing status
                 0x00.toByte()   // SW2	Status byte 2 - Command processing qualifier
@@ -50,8 +73,8 @@ class NfcTextNdefHceService : HostApduService() {
     private var _ndefBytes = NdefMessage(NdefRecord.createTextRecord("", "")).toByteArray()
     private var _hasReadCompatibilityContainer = false
 
-    val hasReadCompantibilityContainer
-        get() = _hasReadCompatibilityContainer
+//    val hasReadCompantibilityContainer
+//        get() = _hasReadCompatibilityContainer
     var stringValue: String
         get() = _stringValue
         set(value) {
@@ -76,7 +99,11 @@ class NfcTextNdefHceService : HostApduService() {
             return OKAY_RESPONSE
         }
 
-
+        if (Arrays.equals(commandApdu, CAPABILITY_CONTAINER_READ_FIRST_16_COMMAND) && !_hasReadCompatibilityContainer) {
+            Log.i(TAG, "READ_CAPABILITY_CONTAINER triggered. Our Response: " + CAPABILITY_CONTAINER_READ_RESPONSE.toHex())
+            _hasReadCompatibilityContainer = true
+            return CAPABILITY_CONTAINER_READ_RESPONSE
+        }
 
         Log.wtf(TAG, "processCommandApdu() | I don't know what's going on!!!")
         return ERROR_RESPONSE
