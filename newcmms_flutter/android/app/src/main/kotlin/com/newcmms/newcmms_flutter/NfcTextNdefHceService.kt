@@ -38,7 +38,6 @@ class NfcTextNdefHceService : HostApduService() {
                 0x0f.toByte()  // Lc field	- Number of bytes present in the data field of the command
         )
 
-        // FIXME: check this shit
         private val CAPABILITY_CONTAINER_READ_RESPONSE = byteArrayOf(
                 0x00.toByte(), 0x11.toByte(), // CCLEN length of the CC file
                 0x20.toByte(), // Mapping Version 2.0
@@ -51,6 +50,27 @@ class NfcTextNdefHceService : HostApduService() {
                 0x00.toByte(), // Read access without any security
                 0xFF.toByte(), // Write access without any security
                 0x90.toByte(), 0x00.toByte() // A_OKAY
+        )
+
+        private val NDEF_SELECT_COMMAND = byteArrayOf(
+                0x00.toByte(), // CLA	- Class - Class of instruction
+                0xa4.toByte(), // Instruction byte (INS) for Select command
+                0x00.toByte(), // Parameter byte (P1), select by identifier
+                0x0c.toByte(), // Parameter byte (P1), select by identifier
+                0x02.toByte(), // Lc field	- Number of bytes present in the data field of the command
+                0xE1.toByte(), 0x04.toByte() // file identifier of the NDEF file retrieved from the CC file
+        )
+
+        private val NDEF_READ_BINARY_NLEN_COMMAND = byteArrayOf(
+                0x00.toByte(), // Class byte (CLA)
+                0xb0.toByte(), // Instruction byte (INS) for ReadBinary command
+                0x00.toByte(), 0x00.toByte(), // Parameter byte (P1, P2), offset inside the CC file
+                0x02.toByte()  // Le field
+        )
+
+        private val NDEF_READ_BINARY_COMMAND = byteArrayOf(
+                0x00.toByte(), // Class byte (CLA)
+                0xb0.toByte() // Instruction byte (INS) for ReadBinary command
         )
 
         private val OKAY_RESPONSE = byteArrayOf(
@@ -71,10 +91,10 @@ class NfcTextNdefHceService : HostApduService() {
 
     private var _stringValue: String = ""
     private var _ndefBytes = NdefMessage(NdefRecord.createTextRecord("", "")).toByteArray()
-    private var _hasReadCompatibilityContainer = false
+    private var _hasSelectedNdef = false
 
 //    val hasReadCompantibilityContainer
-//        get() = _hasReadCompatibilityContainer
+//        get() = _hasSelectedNdef
     var stringValue: String
         get() = _stringValue
         set(value) {
@@ -96,21 +116,47 @@ class NfcTextNdefHceService : HostApduService() {
 
         if (Arrays.equals(commandApdu, CAPABILITY_CONTAINER_SELECT_COMMAND)) {
             Log.i(TAG, "CAPABILITY_CONTAINER_SELECT_COMMAND triggered. Our Response: " + OKAY_RESPONSE.toHex())
+            _hasSelectedNdef = false
             return OKAY_RESPONSE
         }
 
-        if (Arrays.equals(commandApdu, CAPABILITY_CONTAINER_READ_FIRST_16_COMMAND) && !_hasReadCompatibilityContainer) {
+        if (Arrays.equals(commandApdu, CAPABILITY_CONTAINER_READ_FIRST_16_COMMAND) && !_hasSelectedNdef) {
             Log.i(TAG, "READ_CAPABILITY_CONTAINER triggered. Our Response: " + CAPABILITY_CONTAINER_READ_RESPONSE.toHex())
-            _hasReadCompatibilityContainer = true
             return CAPABILITY_CONTAINER_READ_RESPONSE
         }
 
-        Log.wtf(TAG, "processCommandApdu() | I don't know what's going on!!!")
+        if (Arrays.equals(commandApdu, NDEF_SELECT_COMMAND)) {
+            Log.i(TAG, "NDEF_SELECT_COMMAND triggered. Our Response: " + OKAY_RESPONSE.toHex())
+            _hasSelectedNdef = true
+            return OKAY_RESPONSE
+        }
+
+        if (Arrays.equals(commandApdu, NDEF_READ_BINARY_NLEN_COMMAND)) {
+            val sizeOfFile = _ndefBytes.size.toBigInteger().toByteArray().slice(0..1)
+            val response = ByteArray(sizeOfFile.size + OKAY_RESPONSE.size)
+            System.arraycopy(sizeOfFile, 0, response, 0, sizeOfFile.size)
+            System.arraycopy(OKAY_RESPONSE, 0, response, sizeOfFile.size, OKAY_RESPONSE.size)
+            Log.i(TAG, "NDEF_READ_BINARY_NLEN_COMMAND triggered. Our Response: " + response.toHex())
+            return response
+        }
+
+        if (commandApdu != null && Arrays.equals(commandApdu.sliceArray(0..1), NDEF_READ_BINARY_COMMAND)) {
+            val offset = commandApdu.sliceArray(2..3).toHex().toInt(16)
+            val length = commandApdu.sliceArray(4..4).toHex().toInt(16)
+
+            val response = ByteArray(length + OKAY_RESPONSE.size)
+            System.arraycopy(_ndefBytes, offset, response, 0, length)
+            System.arraycopy(_ndefBytes, 0, response, length, OKAY_RESPONSE.size)
+            Log.i(TAG, "NDEF_READ_BINARY_COMMAND offset: $offset, length: $length, data: ${response.toHex()}")
+            return response
+        }
+
+        Log.wtf(TAG, "processCommandApdu() | Unknown command ${commandApdu?.toHex()}")
         return ERROR_RESPONSE
     }
 
     override fun onDeactivated(reason: Int) {
-        Log.d(TAG, "NFC HCE deactivated due to reason $reason")
+        Log.i(TAG, "NFC HCE deactivated due to reason $reason")
     }
 }
 
