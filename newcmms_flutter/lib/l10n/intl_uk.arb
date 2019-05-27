@@ -1,35 +1,249 @@
 {
-  "@@locale": "uk",
-  "@@last_modified": "2019-05-22T18:28:17.668344",
-  "title": "NewCMMS App",
-  "@title": {
-    "description": "The application title",
-    "type": "text",
-    "placeholders": {}
-  },
-  "loginPageLoginLabel": "Login",
-  "@loginPageLoginLabel": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "loginPagePasswordLabel": "Password",
-  "@loginPagePasswordLabel": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "loginPageSubmitLabel": "Log in",
-  "@loginPageSubmitLabel": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "loginPagePasswordIsRequiredError": "Password is required",
-  "@loginPagePasswordIsRequiredError": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "loginPageLoginOrPasswordError": "Invalid login or password",
-  "@loginPageLoginOrPasswordError": {
-    "type": "text",
-    "placeholders": {}
-  }
+    "@@locale": "uk",
+    "title": "Додаток NewCMMS",
+    "@title": {
+      "description": "Назва додатку",
+      "type": "text",
+      "placeholders": {}
+    },
+    "loading": "Завантаження...",
+    "@loading": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "dialogYes": "Так",
+    "@dialogYes": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "dialogNo": "Ні",
+    "@dialogNo": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "unknownError": "Невідома помилка. Спробуйте пізніше.",
+    "@unknownError": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "internetError": "Не вийшло підключитися до серверу. Перевірте Інтернет-з'єднання та доступність сервера.",
+    "@internetError": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "ok": "OK",
+    "@ok": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "nothingFound": "Нічого не знайдено.",
+    "@nothingFound": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userPageTitle": "Користувач додатку NewCMMS",
+    "@userPageTitle": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userDrawerItem": "Акаунт",
+    "@userDrawerItem": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userLoadError": "Не вийшло завантажити користувача",
+    "@userLoadError": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerHistoryDrawerItem": "Історія активності",
+    "@triggerHistoryDrawerItem": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDevicesDrawerItem": "Пристрої-тригери",
+    "@triggerDevicesDrawerItem": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "checkInDrawerItem": "NFC-тригер",
+    "@checkInDrawerItem": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "settingsDrawerItem": "Налаштування",
+    "@settingsDrawerItem": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "settingsPageTitle": "Налаштування",
+    "@settingsPageTitle": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "settingsPageBaseUrlLabel": "Повна адреса сервера",
+    "@settingsPageBaseUrlLabel": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "settingsPageInvalidBaseUrlError": "URL не дійсний",
+    "@settingsPageInvalidBaseUrlError": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "settingsPageLogoutLabel": "Вийти",
+    "@settingsPageLogoutLabel": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "settingsPageLogoutPrompt": "Ви впевнені, що хочете вийти?",
+    "@settingsPageLogoutPrompt": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "loginPageTitle": "Вхід до NewCMMS",
+    "@loginPageTitle": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "loginPageLoginLabel": "Логін",
+    "@loginPageLoginLabel": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "loginPagePasswordLabel": "Пароль",
+    "@loginPagePasswordLabel": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "loginPageSubmitLabel": "Увійти",
+    "@loginPageSubmitLabel": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "loginPageEmailError": "Недійсна електронна пошта",
+    "@loginPageEmailError": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "loginPagePasswordError": "Пароль не може бути пустим",
+    "@loginPagePasswordError": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "loginPageLoginOrPasswordError": "Невірні логін або пароль",
+    "@loginPageLoginOrPasswordError": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userEmail": "Електронна пошта",
+    "@userEmail": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userFullName": "Повне ім'я",
+    "@userFullName": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userRoleEmployee": "Співробітник",
+    "@userRoleEmployee": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userRoleAdmin": "Адміністратор",
+    "@userRoleAdmin": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDevicesPageTitle": "Пристрої-тригери",
+    "@triggerDevicesPageTitle": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDevicePageTitle": "Пристрій-тригер",
+    "@triggerDevicePageTitle": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDevicePhysicalAddress": "Фізична адреса",
+    "@triggerDevicePhysicalAddress": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDeviceName": "Ім'я пристрою",
+    "@triggerDeviceName": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDeviceType": "Тип пристрою",
+    "@triggerDeviceType": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDeviceStatusConnected": "Підключений",
+    "@triggerDeviceStatusConnected": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDeviceStatusDisconnected": "Відключений",
+    "@triggerDeviceStatusDisconnected": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userTriggersPageTitle": "Історія активності",
+    "@userTriggersPageTitle": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userTriggerTriggerDeviceName": "Ім'я пристрою-тригеру",
+    "@userTriggerTriggerDeviceName": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userTriggerTriggerDeviceNameUnknown": "Невідомо",
+    "@userTriggerTriggerDeviceNameUnknown": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userTriggerTypeUnspecified": "Не вказано",
+    "@userTriggerTypeUnspecified": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userTriggerTypeEnter": "Увійшов",
+    "@userTriggerTypeEnter": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userTriggerTypeLeft": "Вийшов",
+    "@userTriggerTypeLeft": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "nfcTitle": "NFC-тригер",
+    "@nfcTitle": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "nfcDisabledMessage": "NFC вимкнений",
+    "@nfcDisabledMessage": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "nfcSettingsButton": "Відкрити налаштування NFC",
+    "@nfcSettingsButton": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "nfcServiceRunning": "Запущений та працює",
+    "@nfcServiceRunning": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "nfcServiceStopped": "Зупинений",
+    "@nfcServiceStopped": {
+      "type": "text",
+      "placeholders": {}
+    }
 }

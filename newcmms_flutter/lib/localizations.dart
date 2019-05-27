@@ -47,13 +47,13 @@ class AppLocalizations {
 
   String get userDrawerItem => Intl.message('Account', name: 'userDrawerItem');
 
-  String get userLoadError => Intl.message('Failed to load user', name: 'userDrawerUserError');
+  String get userLoadError => Intl.message('Failed to load user', name: 'userLoadError');
 
   String get triggerHistoryDrawerItem => Intl.message('Trigger history', name: 'triggerHistoryDrawerItem');
 
   String get triggerDevicesDrawerItem => Intl.message('Trigger devices', name: 'triggerDevicesDrawerItem');
 
-  String get checkInDrawerItem => Intl.message('Check-in', name: 'checkInDrawerItem');
+  String get checkInDrawerItem => Intl.message('NFC check-in', name: 'checkInDrawerItem');
 
   String get settingsDrawerItem => Intl.message('Settings', name: 'settingsDrawerItem');
 

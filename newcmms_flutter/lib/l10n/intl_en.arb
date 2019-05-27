@@ -1,35 +1,249 @@
 {
-  "@@locale": "en",
-  "@@last_modified": "2019-05-22T18:28:17.668344",
-  "title": "NewCMMS App",
-  "@title": {
-    "description": "The application title",
-    "type": "text",
-    "placeholders": {}
-  },
-  "loginPageLoginLabel": "Login",
-  "@loginPageLoginLabel": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "loginPagePasswordLabel": "Password",
-  "@loginPagePasswordLabel": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "loginPageSubmitLabel": "Log in",
-  "@loginPageSubmitLabel": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "loginPagePasswordIsRequiredError": "Password is required",
-  "@loginPagePasswordIsRequiredError": {
-    "type": "text",
-    "placeholders": {}
-  },
-  "loginPageLoginOrPasswordError": "Invalid login or password",
-  "@loginPageLoginOrPasswordError": {
-    "type": "text",
-    "placeholders": {}
-  }
+    "@@locale": "en",
+    "title": "NewCMMS App",
+    "@title": {
+      "description": "The application title",
+      "type": "text",
+      "placeholders": {}
+    },
+    "loading": "Loading...",
+    "@loading": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "dialogYes": "Yes",
+    "@dialogYes": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "dialogNo": "No",
+    "@dialogNo": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "unknownError": "Unknown error. Try again later.",
+    "@unknownError": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "internetError": "Unable to connect to server. Check Internet connection and server accessibility.",
+    "@internetError": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "ok": "OK",
+    "@ok": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "nothingFound": "Nothing found.",
+    "@nothingFound": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userPageTitle": "NewCMMS App User",
+    "@userPageTitle": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userDrawerItem": "Account",
+    "@userDrawerItem": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userLoadError": "Failed to load user",
+    "@userLoadError": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerHistoryDrawerItem": "Trigger history",
+    "@triggerHistoryDrawerItem": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDevicesDrawerItem": "Trigger devices",
+    "@triggerDevicesDrawerItem": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "checkInDrawerItem": "NFC check-in",
+    "@checkInDrawerItem": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "settingsDrawerItem": "Settings",
+    "@settingsDrawerItem": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "settingsPageTitle": "Settings",
+    "@settingsPageTitle": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "settingsPageBaseUrlLabel": "Server URL",
+    "@settingsPageBaseUrlLabel": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "settingsPageInvalidBaseUrlError": "A valid URL is required",
+    "@settingsPageInvalidBaseUrlError": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "settingsPageLogoutLabel": "Log out",
+    "@settingsPageLogoutLabel": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "settingsPageLogoutPrompt": "Are you sure you want to log out?",
+    "@settingsPageLogoutPrompt": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "loginPageTitle": "NewCMMS Login",
+    "@loginPageTitle": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "loginPageLoginLabel": "Login",
+    "@loginPageLoginLabel": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "loginPagePasswordLabel": "Password",
+    "@loginPagePasswordLabel": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "loginPageSubmitLabel": "Log in",
+    "@loginPageSubmitLabel": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "loginPageEmailError": "Invalid email",
+    "@loginPageEmailError": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "loginPagePasswordError": "Password is required",
+    "@loginPagePasswordError": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "loginPageLoginOrPasswordError": "Invalid login or password",
+    "@loginPageLoginOrPasswordError": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userEmail": "Email",
+    "@userEmail": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userFullName": "Full name",
+    "@userFullName": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userRoleEmployee": "Employee",
+    "@userRoleEmployee": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userRoleAdmin": "Admin",
+    "@userRoleAdmin": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDevicesPageTitle": "Trigger devices",
+    "@triggerDevicesPageTitle": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDevicePageTitle": "Trigger device details",
+    "@triggerDevicePageTitle": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDevicePhysicalAddress": "Physical address",
+    "@triggerDevicePhysicalAddress": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDeviceName": "Device name",
+    "@triggerDeviceName": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDeviceType": "Device type",
+    "@triggerDeviceType": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDeviceStatusConnected": "Connected",
+    "@triggerDeviceStatusConnected": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "triggerDeviceStatusDisconnected": "Disconnected",
+    "@triggerDeviceStatusDisconnected": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userTriggersPageTitle": "Trigger history",
+    "@userTriggersPageTitle": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userTriggerTriggerDeviceName": "Trigger device name",
+    "@userTriggerTriggerDeviceName": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userTriggerTriggerDeviceNameUnknown": "Unknown",
+    "@userTriggerTriggerDeviceNameUnknown": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userTriggerTypeUnspecified": "Unspecified",
+    "@userTriggerTypeUnspecified": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userTriggerTypeEnter": "Entered",
+    "@userTriggerTypeEnter": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "userTriggerTypeLeft": "Left",
+    "@userTriggerTypeLeft": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "nfcTitle": "NFC check-in",
+    "@nfcTitle": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "nfcDisabledMessage": "NFC is disabled",
+    "@nfcDisabledMessage": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "nfcSettingsButton": "Open NFC settings",
+    "@nfcSettingsButton": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "nfcServiceRunning": "Up and running",
+    "@nfcServiceRunning": {
+      "type": "text",
+      "placeholders": {}
+    },
+    "nfcServiceStopped": "Stopped",
+    "@nfcServiceStopped": {
+      "type": "text",
+      "placeholders": {}
+    }
 }
