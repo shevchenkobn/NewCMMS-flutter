@@ -22,6 +22,7 @@ class NfcHcePageState extends State<NfcHcePage> {
   bool _isLoading;
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> _snackbar;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  AppBar _appBar;
 
   NfcHcePageState(this._nfcHceService)
       : _isNfcEnabled = null,
@@ -30,17 +31,18 @@ class NfcHcePageState extends State<NfcHcePage> {
 
   @override
   void initState() {
-    _loopRefresh();
     super.initState();
+    _loopRefresh();
   }
 
   @override
   Widget build(BuildContext context) {
+    _appBar = AppBar(
+      title: Text(AppLocalizations.of(context).nfcTitle),
+    );
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context).nfcTitle),
-      ),
+      appBar: _appBar,
       body: _getViewportBody(),
     );
   }
@@ -59,22 +61,31 @@ class NfcHcePageState extends State<NfcHcePage> {
           value: null,
         ),
       );
-    } else if (_isLoading) {
+    } else {
+      return SizedBox(
+        height: _getViewportHeight(),
+        child: _getProgressBarDecoratedBody(),
+      );
+    }
+  }
+
+  Widget _getProgressBarDecoratedBody() {
+    if (_isLoading) {
       return Stack(
         alignment: AlignmentDirectional.center,
         children: <Widget>[
           Positioned(
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: _getBody()
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: _getBody()
           ),
           Align(
-            alignment: AlignmentDirectional.topCenter,
-            child: LinearProgressIndicator(
-              value: null,
-            )
+              alignment: AlignmentDirectional.topCenter,
+              child: LinearProgressIndicator(
+                value: null,
+              )
           )
         ],
       );
@@ -97,7 +108,8 @@ class NfcHcePageState extends State<NfcHcePage> {
         behavior: NoOverScrollGlow(),
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
-          child: Card(
+          child: SizedBox(
+            height: _getViewportHeight(),
             child: _getCardContent(),
           ),
         ),
@@ -108,43 +120,55 @@ class NfcHcePageState extends State<NfcHcePage> {
   Widget _getCardContent() {
     final localization = AppLocalizations.of(context);
     if (!_isNfcEnabled) {
-      return Align(
-        alignment: Alignment(0, -0.3),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(localization.nfcDisabledMessage),
-            RaisedButton(
-              child: Text(localization.nfcSettingsButton),
-              onPressed: () {
-                _refreshAfter(_nfcHceService.openNfcSettings())
-                    .whenComplete(() => _setStateSafely())
-                    .catchError(_showUnknownError);
-              },
-            ),
-          ],
+      return Card(
+        child: Align(
+          alignment: Alignment(0, -0.3),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(localization.nfcDisabledMessage),
+              RaisedButton(
+                color: Colors.blue,
+                textColor: Colors.white,
+                child: Text(localization.nfcSettingsButton),
+                onPressed: () {
+                  _refreshAfter(_nfcHceService.openNfcSettings())
+                      .whenComplete(() => _setStateSafely())
+                      .catchError(_showUnknownError);
+                },
+              ),
+            ],
+          ),
         ),
       );
     }
-    return ListTile(
-      title: Text(
-        _isNfcServiceRunning ? localization.nfcServiceRunning : localization.nfcServiceStopped,
-      ),
-      trailing: Switch(
-        value: _isNfcServiceRunning,
-        onChanged: _isLoading ? null : (newValue) {
-          _setStateSafely(cb: () {
-            _isLoading = true;
-          });
-          _refreshAfter(newValue ? _nfcHceService.startService() : _nfcHceService.stopService())
-            .catchError(_showUnknownError).whenComplete(() {
-              _setStateSafely(cb: () {
-                _isLoading = false;
-              });
-            });
-        }
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Card(
+          child: ListTile(
+            title: Text(
+              _isNfcServiceRunning ? localization.nfcServiceRunning : localization.nfcServiceStopped,
+            ),
+            trailing: Switch(
+              value: _isNfcServiceRunning,
+              onChanged: _isLoading ? null : (newValue) {
+                _setStateSafely(cb: () {
+                  _isLoading = true;
+                });
+                _refreshAfter(newValue ? _nfcHceService.startService() : _nfcHceService.stopService())
+                    .catchError(_showUnknownError).whenComplete(() {
+                  _setStateSafely(cb: () {
+                    _isLoading = false;
+                  });
+                });
+              }
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -205,5 +229,9 @@ class NfcHcePageState extends State<NfcHcePage> {
       _snackbar.close();
       _snackbar = null;
     }
+  }
+
+  double _getViewportHeight() {
+    return MediaQuery.of(context).size.height - _appBar.preferredSize.height - 24;
   }
 }

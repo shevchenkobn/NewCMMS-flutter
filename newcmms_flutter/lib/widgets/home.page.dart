@@ -115,9 +115,6 @@ class HomePageState extends State<HomePage> {
   }
 
   double _getViewportHeight() {
-    if (_appBar == null) {
-      return 228;
-    }
-    return MediaQuery.of(context).size.height - _appBar.preferredSize.height;
+    return MediaQuery.of(context).size.height - (_appBar == null ? 56 : _appBar.preferredSize.height);
   }
 }
