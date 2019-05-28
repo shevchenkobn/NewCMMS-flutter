@@ -121,7 +121,7 @@ class UserTriggersState extends State<UserTriggers> {
                 ListTile(
                   leading: Icon(Icons.date_range),
                   title: Text(
-                    DateFormat.yMMMMEEEEd().add_Hms().format(userTrigger.triggerTime),
+                    DateFormat.yMMMMEEEEd().add_Hms().format(userTrigger.triggerTime.toLocal()),
                   ),
                 ),
                 Padding(
